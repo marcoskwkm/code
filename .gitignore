@@ -7,6 +7,9 @@
 # Unignore all dirs
 !*/
 
+# Unignore Makefile
+!Makefile
+
 ### Above combination will ignore all files without extension ###
 
 # Object files
