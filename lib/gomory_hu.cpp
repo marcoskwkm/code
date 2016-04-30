@@ -1,6 +1,6 @@
 // Gomory-Hu Tree
 // Finds flow-equivalent tree of a graph
-// Uses Gusfield algorithm: Performs V - 1 maxflows
+// Uses Gusfield's algorithm: Performs V - 1 maxflows
 // Requires: dinic
 
 const int LOG = 20;
