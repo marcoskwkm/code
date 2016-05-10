@@ -1,4 +1,4 @@
-xxxxxconst double EPS = 1e-9
+const double EPS = 1e-9
 
 typedef int CTYPE;
 
