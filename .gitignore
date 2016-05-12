@@ -48,3 +48,6 @@
 # Emacs backup files
 *~
 *\#
+
+# OSX Crap
+.DS_Store
