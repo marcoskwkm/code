@@ -1,5 +1,7 @@
 // Gomory-Hu Tree
 // Finds flow-equivalent tree of a graph
+// Minimum edge in an s-t path corresponds to the maxflow of s-t and
+// divides the tree into two components which represents the s-t cut.
 // Uses Gusfield's algorithm: Performs V - 1 maxflows
 // Requires: dinic
 

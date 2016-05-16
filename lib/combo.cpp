@@ -16,10 +16,10 @@ lint arrange(int n, int k) {
 }
 
 lint modexp(lint b, lint e) {
-    lint ret = 1, aux = 1;
+    lint ret = 1, aux = b;
     while (e) {
-        aux = aux * aux % P;
         if (e & 1) ret = ret * aux % P;
+        aux = aux * aux % P;
         e >>= 1;
     }
     return ret;
