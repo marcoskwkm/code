@@ -49,5 +49,9 @@
 *~
 *\#
 
+# Hightail
+Hightail*.jar
+hightail.*
+
 # OSX Crap
 .DS_Store
