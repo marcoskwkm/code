@@ -12,61 +12,41 @@ const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAXD = 310;
 const int MAXP = MAXD*MAXD;
 
-int tree[4][4*MAXD][4*MAXD];
-//pii mudou[4][16*MAXD*MAXD];
-vector<pii> mudou[4];
-int len_mudou[4];
+int tree[4][MAXD][MAXD];
 int n, m, p;
 
-int query_col(int k, int ir, int i, int l, int r, int ql, int qr) {
-    if (qr < l || ql > r) return INF;
-    if (ql <= l && r <= qr) return tree[k][ir][i];
-    int L = 2*i + 1, R = 2*i + 2, mid = (l + r)/2;
-    return min(query_col(k, ir, L, l, mid, ql, qr),
-               query_col(k, ir, R, mid + 1, r, ql, qr));
-}
-
-int query_row(int k, int i, int l, int r, int qrl, int qrr, int qcl, int qcr) {
-    if (qrr < l || qrl > r) return INF;
-    if (qrl <= l && r <= qrr) return query_col(k, i, 0, 0, m - 1, qcl, qcr);
-    int L = 2*i + 1, R = 2*i + 2, mid = (l + r)/2;
-    return min(query_row(k, L, l, mid, qrl, qrr, qcl, qcr),
-               query_row(k, R, mid + 1, r, qrl, qrr, qcl, qcr));
-}
-
-void update_col(int k, int ir, int i, int l, int r, int qc, int val) {
-    if (qc < l || qc > r) return;
-    // mudou[k][len_mudou[k]++] = pii(ir, i);
-    mudou[k].push_back(pii(ir, i));
-    if (l == r) {
-        tree[k][ir][i] = val;
-        return;
+void update(int r, int c, int val, bool force = false) {
+    r++; c++;
+    for (int k = 0; k < 4; k++) {
+        int R = r, C = c, add = 0;
+        if (k == 0) add = -r - c;
+        if (k == 1) C = MAXD - c, add = -r + c;
+        if (k == 2) R = MAXD - r, add = r - c;
+        if (k == 3) C = MAXD - c, R = MAXD - r, add = r + c;
+        for (int rr = R; rr < MAXD; rr += rr & -rr) {
+            for (int cc = C; cc < MAXD; cc += cc & -cc) {
+                if (force) tree[k][rr][cc] = val + add;
+                else tree[k][rr][cc] = min(tree[k][rr][cc], val + add);
+            }
+        }
     }
-    int L = 2*i + 1, R = 2*i + 2, mid = (l + r)/2;
-    update_col(k, ir, L, l, mid, qc, val);
-    update_col(k, ir, R, mid + 1, r, qc, val);
-    tree[k][ir][i] = min(tree[k][ir][L], tree[k][ir][R]);
 }
 
-int update_row(int k, int i, int l, int r, int qr, int qc, int val) {
-    if (qr < l || qr > r) return query_col(k, i, 0, 0, m - 1, qc, qc);
-    if (l == r) {
-        update_col(k, i, 0, 0, m - 1, qc, val);
-        return val;
+int query(int r, int c) {
+    r++; c++;
+    int ret = INF;
+    for (int k = 0; k < 4; k++) {
+        int R = r, C = c, add = 0;
+        if (k == 0) add = r + c;
+        if (k == 1) C = MAXD - c, add = r - c;
+        if (k == 2) R = MAXD - r, add = -r + c;
+        if (k == 3) C = MAXD - c, R = MAXD - r, add = -r - c;
+        for (int rr = R; rr > 0; rr -= rr & -rr)
+            for (int cc = C; cc > 0; cc -= cc & -cc)
+                ret = min(ret, tree[k][rr][cc] + add);
     }
-    int L = 2*i + 1, R = 2*i + 2, mid = (l + r)/2;
-    int got = min(update_row(k, L, l, mid, qr, qc, val),
-                  update_row(k, R, mid + 1, r, qr, qc, val));
-    update_col(k, i, 0, 0, m - 1, qc, got);
-    return got;
+    return ret;
 }
-
-inline void update(int r, int c, int val) {
-    update_row(0, 0, 0, n - 1, r, c, -r - c + val);
-    update_row(1, 0, 0, n - 1, r, c, -r + c + val);
-    update_row(2, 0, 0, n - 1, r, c, r - c + val);
-    update_row(3, 0, 0, n - 1, r, c, r + c + val);
-}    
 
 vector<pii> pos[MAXP];
 int bests[MAXD*MAXD];
@@ -87,24 +67,13 @@ int main() {
         int cnt = 0;
         for (pii &chest: pos[pp]) {
             int r = chest.first, c = chest.second;
-            int got = INF;
-            got = min(got, query_row(0, 0, 0, n - 1, 0, r, 0, c) + r + c);
-            got = min(got, query_row(1, 0, 0, n - 1, 0, r, c, m - 1) + r - c);
-            got = min(got, query_row(2, 0, 0, n - 1, r, n - 1, 0, c) - r + c);
-            got = min(got, query_row(3, 0, 0, n - 1, r, n - 1, c, m - 1) - r - c);
-            bests[cnt++] = got;
+            bests[cnt++] = query(r, c);
         }
-        for (int i = 0; i < 4; i++) {
-            for (pii &mp: mudou[i])
-                tree[i][mp.first][mp.second] = INF;
-            mudou[i].clear();
-            // for (int j = 0; j < len_mudou[i]; j++)
-            //     tree[i][mudou[i][j].first][mudou[i][j].second] = INF;
-            // len_mudou[i] = 0;
-        }        
+        for (const pii &mp: pos[pp + 1])
+            update(mp.first, mp.second, INF, true /* force */);
         for (int i = 0; i < (int)pos[pp].size(); i++) 
             update(pos[pp][i].first, pos[pp][i].second, bests[i]);
     }
-    printf("%d\n", query_row(3, 0, 0, n - 1, 0, n - 1, 0, m - 1));
+    printf("%d\n", query(0, 0));
     return 0;
 }
