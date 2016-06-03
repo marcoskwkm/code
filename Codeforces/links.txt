@@ -1,0 +1,5 @@
+Contest link:
+http://codeforces.com/contest/<contest number>/
+
+Submission page:
+http://codeforces.com/contest/<contest number>/submit
