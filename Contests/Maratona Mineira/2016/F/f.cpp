@@ -68,8 +68,16 @@ int main() {
         State cur = fila.front();
         fila.pop_front();
         int d = dist[cur];
-        // printf("(%d, %d) [%d, %d, %d, %d], %d: %d\n", cur.r, cur.c,
-        //        cur.k[0], cur.k[1], cur.k[2], cur.k[3], cur.md, d);
+        // printf("Position: (%d, %d)\n", cur.r, cur.c);
+        // printf("Inventory:");
+        // for (int i = 0; i < 4; i++) if (cur.k[i] == 1) printf(" %c", keys[i]);
+        // printf("\n");
+        // printf("Chest:");
+        // for (int i = 0; i < 4; i++) if (cur.k[i] == 2) printf(" %c", keys[i]);
+        // printf("\n");
+        // printf("Doors unlocked:");
+        // for (int i = 0; i < 8; i++) if (cur.md & (1 << i)) printf(" %d", i);
+        // printf("\n\n");
         if (grid[cur.r][cur.c] == 'E') {
             printf("%d\n", d);
             return 0;
@@ -107,6 +115,7 @@ int main() {
                     else nxtk[i] = 0;
                 }
                 State nxt(cur.r, cur.c, nxtk, cur.md);
+                if (nxt.carrying > t) continue;
                 if (dist.find(nxt) == dist.end()) {
                     dist[nxt] = d;
                     fila.push_front(nxt);

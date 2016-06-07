@@ -12,7 +12,7 @@ const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 
 typedef int FTYPE;      // define as needed
 
-const int MAXV = 5010;
+const int MAXV = 6010;
 const FTYPE FINF = INF; // infinite flow
 
 struct Edge {
@@ -107,7 +107,7 @@ int main() {
             if (l[j] < r[i]) continue;
             lint d = (x[j] - x[i])*(x[j] - x[i]) + (y[j] - y[i])*(y[j] - y[i]);
             lint t = (r[i] - l[j])*(r[i] - l[j]);
-            if (d <= t) add_edge(2*i, 2*j + 1, 1);
+            if (r[i] <= l[j] && d <= t) add_edge(2*i, 2*j + 1, 1);
         }
     }
     int s = 2*q, t = 2*q + 1;
