@@ -1,4 +1,3 @@
 Maximum (weighted) matching - O(N^3) ou melhor
 Finding all palindromic substrings - O(N) (http://www.akalin.cx/longest-palindrome-linear-time)
 Aho-Corasick
-Heavy-Light Decomposition
