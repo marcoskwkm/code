@@ -14,9 +14,9 @@ const int MAXN = 410;
 vector<int> adj[MAXN];
 vector<int> v1d[MAXN];
 int dist[MAXN][MAXN];
-int q2d[MAXN];
 double p2d[MAXN];
-bool mark[MAXN];
+double mostp[MAXN];
+double pv[MAXN];
 
 int main() {
     int n, m;
@@ -46,22 +46,20 @@ int main() {
             int bestv2 = -1;
             for (int v2 = 1; v2 <= n; v2++) {
                 double probv2 = 0;
-                memset(mark, 0, sizeof(mark));
-                memset(q2d, 0, sizeof(q2d));
+                memset(pv, 0, sizeof(pv));
                 memset(p2d, 0, sizeof(p2d));
-                for (int u: v1d[d]) {
-                    for (int nxt: adj[u]) {
-                        mark[nxt] = 1;
-                        p2d[dist[v2][nxt]] += 1./ adj[u].size() / v1d[d].size();
-                    }
+                memset(mostp, 0, sizeof(mostp));
+                for (int u: v1d[d])
+                    for (int nxt: adj[u])
+                        pv[nxt] += 1./ adj[u].size() / v1d[d].size();
+                for (int v = 1; v <= n; v++) {
+                    mostp[dist[v2][v]] = max(mostp[dist[v2][v]], pv[v]);
+                    p2d[dist[v2][v]] += pv[v];
                 }
-                for (int s2 = 1; s2 <= n; s2++)
-                    if (mark[s2])
-                        q2d[dist[v2][s2]]++;
-                            
+
                 for (int d2 = 0; d2 < n; d2++) {
-                    if (q2d[d2] == 0) continue;
-                    probv2 += p2d[d2] * 1. / q2d[d2];
+                    if (p2d[d2] == 0) continue;
+                    probv2 += mostp[d2];
                 }
                 if (probv2 > prob2) {
                     prob2 = probv2;
