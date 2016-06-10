@@ -15,8 +15,48 @@ public:
     int getbest(vector <int> a, vector <int> b, int X);
 };
 
-int Moneymanager::getbest(vector <int> a, vector <int> b, int X) {
+const int MAXN = 30;
+const int MAXS = 260;
 
+int dp[MAXN][MAXN][MAXS];
+int sb[2*MAXN];
+
+int Moneymanager::getbest(vector <int> a, vector <int> b, int X) {
+    int n = a.size();
+    vector<pii> v;
+    for (int i = 0; i < n; i++)
+        v.push_back(pii(a[i], b[i]));
+    sort(v.begin(), v.end(), [](pii a, pii b) {
+        return a.first * b.second < b.first * a.second;
+    });
+
+    sb[0] = v[0].second;
+    for (int i = 1; i < n; i++)
+        sb[i] = sb[i - 1] + v[i].second;
+
+    int ans = 0;
+    for (int sb2 = 0; sb2 < MAXS; sb2++) {
+        int sb1 = sb[n - 1] - sb2;
+        for (int i = 0; 2 * i <= n; i++)
+            for (int j = 0; 2 * j <= n; j++)
+                for (int s = 0; s < MAXS; s++)
+                    dp[i][j][s] = -INF;
+        dp[0][0][0] = 0;
+        for (int q = 0; q < n; q++) {
+            for (int i = 0; 2*i <= n && i <= q; i++) {
+                int j = q - i;
+                int cur = i + j;
+                for (int s = 0; s < MAXS; s++) {
+                    int s2 = q ? sb[q - 1] - s : 0;
+                    if (dp[i][j][s] == -INF) continue;
+                    if (2*i < n) dp[i + 1][j][s + v[cur].second] = max(dp[i + 1][j][s + v[cur].second], dp[i][j][s] + (v[cur].second + s + sb2) * v[cur].first);
+                    if (2*j < n) dp[i][j + 1][s] = max(dp[i][j + 1][s], dp[i][j][s] + (v[cur].second + s2) * v[cur].first);
+                }
+            }
+        }
+        ans = max(ans, dp[n / 2][n / 2][sb1] + sb2 * X);
+    }
+    return ans;
 }
 
 // BEGIN CUT HERE
