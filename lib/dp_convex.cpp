@@ -72,7 +72,7 @@ template< class C_TYPE, class Compare = less<C_TYPE> > struct ConvexHullOpt {
     }
 
     C_TYPE get(C_TYPE x) {
-        if (set_end.empty()) return -LINF;
+        if (set_end.empty()) abort(); // structure has no lines
         Line dummy;
         dummy.end_r = x;
         auto it = set_end.lower_bound(dummy);
