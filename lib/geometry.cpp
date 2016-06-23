@@ -79,8 +79,9 @@ Point getIntersection(const Point &p, const Point &q, const Point &r, const Poin
 }
 
 // Returns convex hull in clockwise-order.
-Poly convexHull(vector<Point> p) {
-    sort(p.begin(), p.end(), [](const Point &a, const Point &b) const {
+Poly convexHull(vector<Point> poly) {
+    sort(poly.begin(), poly.end(), [](const Point &a, const Point &b) {
+        if (a.x == b.x) return a.y < b.y;
         return a.x < b.x;
     });
     Poly top, bot;
@@ -96,6 +97,8 @@ Poly convexHull(vector<Point> p) {
         }
         top.push_back(p);
         bot.push_back(p);
+        tlen++;
+        blen++;
     }
     for (int i = blen - 2; i > 0; i--)
         top.push_back(bot[i]);
