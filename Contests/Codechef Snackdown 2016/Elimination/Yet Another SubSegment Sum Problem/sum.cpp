@@ -10,8 +10,8 @@ typedef pair<pll, int> ppi;
 
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
-const int MAXN = (int)2e5 + 10;
-const int MAXND = (int)2e7 + 10;
+const int MAXN = (int)1e5 + 10;
+const int MAXND = (int)1e7 + 10;
 
 struct Node {
     int l, r;
@@ -90,11 +90,11 @@ int main() {
 
     head[0] = newnode(1, n, 0, 0);
     build(head[0]);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < (int)v.size(); i++) {
         if (v[i].first.first == 0)
             head[i + 1] = update(head[i], v[i].second, 0, 0);
         else
-        head[i + 1] = update(head[i], v[i].second, v[i].first.first, v[i].first.second);
+            head[i + 1] = update(head[i], v[i].second, v[i].first.first, v[i].first.second);
     }
 
     int q;
