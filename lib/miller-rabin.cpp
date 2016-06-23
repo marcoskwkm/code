@@ -22,7 +22,7 @@ namespace MillerRabin {
         return ret;
     }        
 
-    // O(log^2 n), works for any n < 2^64
+    // O(log^2 n), works for any n < 2^63
     bool is_prime(ulint n) {
         if (n < 1) return 0;
         ulint d = n - 1;
