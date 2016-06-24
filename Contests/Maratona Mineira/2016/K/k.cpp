@@ -18,21 +18,20 @@ const FTYPE FINF = INF; // infinite flow
 struct Edge {
     int to;    
     FTYPE cap;
-    Edge(int t, FTYPE c) { to = t; cap = c; }
+    Edge(int t = 0, FTYPE c = 0) { to = t; cap = c; }
 };
 
 vector<int> adj[MAXV];
-vector<Edge> edge, s_edge;
+Edge edge[3000*3000*2 + 10];
+int n_edges;
 int ptr[MAXV], dinic_dist[MAXV];
 
 // Inserts an edge u->v with capacity c
 inline void add_edge(int u, int v, FTYPE c) {
-    adj[u].push_back(edge.size());
-    edge.push_back(Edge(v, c));
-    s_edge.push_back(Edge(v, c));
-    adj[v].push_back(edge.size());
-    edge.push_back(Edge(u, 0)); // modify to Edge(u, c) if graph is non-directed
-    s_edge.push_back(Edge(u, 0));
+    adj[u].push_back(n_edges);
+    edge[n_edges++] = Edge(v, c);
+    adj[v].push_back(n_edges);
+    edge[n_edges++] = Edge(u, 0);
 }
 
 bool dinic_bfs(int _s, int _t) {
@@ -81,20 +80,9 @@ FTYPE dinic(int _s, int _t) {
     return ret;
 }
 
-// Removes all flow but keeps graph structure
-void dinic_reset() {
-    for (int i = 0; i < (int)edge.size(); i++)
-        edge[i].cap = s_edge[i].cap;
-}
-
-// Clears dinic structure
-inline void dinic_clear() {
-    for(int i = 0; i < MAXV; ++i) adj[i].clear();
-    edge.clear();
-}
-
 lint x[MAXV], y[MAXV];
 lint l[MAXV], r[MAXV];
+int greedy[MAXV];
 
 int main() {
     int n, q;
@@ -110,13 +98,29 @@ int main() {
             if (r[i] <= l[j] && d <= t) add_edge(2*i, 2*j + 1, 1);
         }
     }
+    memset(greedy, -1, sizeof(greedy));
+    // greedy matching
+    int start = 0;
+    for (int i = 0; i < q; i++) {
+        for (int idx: adj[2*i]) {
+            int nxt = edge[idx].to;
+            if (greedy[nxt] != -1) continue;
+            greedy[2*i] = nxt;
+            greedy[nxt] = 2*i;
+            edge[idx].cap -= 1;
+            edge[idx^1].cap += 1;
+            start++;
+            break;
+        }
+    }
+    
     int s = 2*q, t = 2*q + 1;
     for (int i = 0; i < q; i++) {
-        add_edge(s, 2*i, 1);
-        add_edge(2*i + 1, t, 1);
+        if (greedy[2*i] == -1) add_edge(s, 2*i, 1);
+        if (greedy[2*i + 1] == -1) add_edge(2*i + 1, t, 1);
     }
     int flow = dinic(s, t);
-    int needs = q - flow;
+    int needs = q - flow - start;
     printf("%c\n", n >= needs ? 'S' : 'N');    
     return 0;
 }
