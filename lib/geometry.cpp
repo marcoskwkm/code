@@ -7,7 +7,7 @@ inline int cmp(double a, double b = 0) { return (a < b + EPS) ? (a + EPS < b) ? 
 
 struct Point {
     CTYPE x,y;
-    Point(){}
+    Point() {}
     Point(CTYPE xx,CTYPE yy) { x = xx; y = yy; }
     int _cmp(Point q) const {
         if (int t = cmp(x, q.x)) return t;
