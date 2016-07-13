@@ -13,27 +13,26 @@ const int MAXN = 1010;
 
 double E, P;
 
-double get_power(double p, double e, double t) {
-    double a = p / e * E, b = p / e * t;
-    if (t == 29) printf("%.2f %.2f\n", a, b);
+inline double get_power(double p, double e, double t) {
     return p / e * E * exp(p / e * t);
 }
 
 double e[MAXN], p[MAXN];
 vector<int> child[MAXN];
 int pai[MAXN];
-double opt_e[MAXN], opt_p[MAXN];
+double best_e, best_p;
 
-void dfs(int v) {
-    opt_e[v] = e[v], opt_p[v] = p[v];
-    for (int nxt: child[v]) {
-        dfs(nxt);
-        double got_e = e[v] + opt_e[v] / 2, got_p = p[v] + opt_p[v];
-        if (opt_e[v] * got_p < got_e * opt_p[v]) {
-            opt_e[v] = got_e;
-            opt_p[v] = got_p;
-        }
+inline void update(double &be, double &bp, double ee, double pp) {
+    if (be * pp > ee * bp) {
+        be = ee;
+        bp = pp;
     }
+};
+
+void dfs(int v, double cur_e, double cur_p) {
+    update(best_e, best_p, cur_e, cur_p);
+    for (int nxt: child[v])
+        dfs(nxt, cur_e + e[nxt] / 2, cur_p + p[nxt]);
 }            
 
 int main() {
@@ -44,20 +43,13 @@ int main() {
             scanf("%lf%lf%d", &e[i], &p[i], &pai[i]);
             if (pai[i]) child[pai[i]].push_back(i);
         }
+        best_e = 1, best_p = 0;
         for (int i = 1; i <= n; i++)
-            if (!pai[i])
-                dfs(i);
-        double best_e = 0, best_p = 1;
-        for (int i = 1; i <= n; i++) {
-            if (best_e * opt_p[i] < opt_e[i] * best_p) {
-                best_e = opt_e[i];
-                best_p = opt_p[i];
-            }
-        }
+            dfs(i, e[i], p[i]);
 
-        printf("E = %.2f\n", E);
-        printf("best_e = %.2f, best_p = %.2f\n", best_e, best_p);
-        printf("%.2f\n", get_power(best_p, best_e, 29));
+        // printf("E = %.2f\n", E);
+        // printf("best_e = %.2f, best_p = %.2f\n", best_e, best_p);
+        // printf("%.2f\n", get_power(best_p, best_e, 29));
 
         if (E >= P) {
             printf("0\n");
