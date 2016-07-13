@@ -23,6 +23,7 @@ typedef vector<Point> Poly;
 
 double norm(Point &p) { return sqrt(p.x*p.x + p.y*p.y); }
 Point operator*(double k, const Point &p) { return Point(k*p.x, k*p.y); }
+Point operator/(const Point &p, double k) { return Point(p.x / k, p.y / k); }
 Point operator+(const Point &a, const Point &b) { return Point(a.x + b.x, a.y + b.y); }
 Point operator-(const Point &a, const Point &b) { return Point(a.x-b.x, a.y-b.y); }
 CTYPE operator*(const Point &a, const Point &b) { return a.x*b.x + a.y*b.y; }

@@ -33,10 +33,16 @@ Vector operator^(const Vector &u, const Vector &v) {
                   u.x*v.y - u.y*v.x);
 }
 
+// finds Ax + By + Cz + D = 0, given three points on the plane
 tuple<double, double, double, double> get_plane_equation(const Point &p1, const Point &p2, const Point &p3) {
     Vector u = p2 - p1, v = p3 - p1;
     Vector n = u ^ v;
     return make_tuple(n.x, n.y, n.z, -n.x*p1.x - n.y*p1.y - n.z*p1.z);
+}
+
+// finds Ax + By + Cz + D = 0, given a point and a normal vector
+tuple<double, double, double, double> get_plane_equation(const Point &p, const Vector &n) {
+    return make_tuple(n.x, n.y, n.z, -(p * n));
 }
 
 pair<Point, bool> get_line_plane_intersection(const Point &p1, const Point &p2,
@@ -46,4 +52,9 @@ pair<Point, bool> get_line_plane_intersection(const Point &p1, const Point &p2,
     Point p = p1 + t*v;
     bool intersects = (0 - EPS <= t && t <= 1 + EPS);
     return make_pair(p, intersects);
+}
+
+double get_point_line_dist(const Point &p, const Point &pr, const Vector &dir) {
+    Vector u = p - pr;
+    return norm(u ^ dir) / norm(dir);
 }
