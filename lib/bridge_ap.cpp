@@ -18,12 +18,12 @@ namespace bap {
             }
             else if (nxt != prev) low[v] = min(low[v], ind[nxt]);
         }
-        if(prev == -1) {
-            if(cont > 1) {
+        if (prev == -1) {
+            if (cont > 1) {
                 // v is an articulation point
             }
         }
-        else if(flag) {
+        else if (flag) {
             // v is an articulation point
         }
     }

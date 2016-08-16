@@ -21,15 +21,15 @@ vector<Hash> build_hash(int n, HType *v) {
     pot[0] = Hash(1,1);
     vector<Hash> ret;
     Hash acc;
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         acc.append(v[i]);
         ret.push_back(acc);
-        if(i > 0) pot[i] = pot[i-1] * Hash(P1, P2);
+        if (i > 0) pot[i] = pot[i-1] * Hash(P1, P2);
     }
     return ret;
 }
 
 inline Hash get_hash(int l, int r, vector<Hash> &hashv) {
-    if(l == 0) return hashv[r];
+    if (l == 0) return hashv[r];
     return hashv[r] - hashv[l-1] * pot[r-l+1];
 }

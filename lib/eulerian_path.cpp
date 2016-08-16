@@ -7,9 +7,9 @@ int ptr[MAXN];
 vector<int> _path; // guarda o caminho
 
 void find_path(int v) {
-    for(int &a=ptr[v];a<adj[v].size();++a) {
+    for (int &a=ptr[v]; a<adj[v].size(); ++a) {
         int nxt = adj[v][a];
-        if(mat[v][nxt]) {
+        if (mat[v][nxt]) {
             mat[v][nxt]--; mat[nxt][v]--;
             find_path(nxt);
             break;

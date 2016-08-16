@@ -35,14 +35,14 @@ int prv[MAXV], e_ind[MAXV];
 bool foi[MAXV];
 
 void bellman_ford(int _s) {
-    for(int a=0;a<V;++a) dist[a] = CINF;
+    for (int a = 0; a < V; ++a) dist[a] = CINF;
     dist[_s] = 0;
-    for(int st=0;st<V;++st) {
-        for(int v=0;v<V;++v) {
-            for(size_t a=0;a<adj[v].size();++a) {
+    for (int st = 0; st < V; ++st) {
+        for (int v = 0; v < V; ++v) {
+            for (size_t a = 0; a < adj[v].size(); ++a) {
                 int ind = adj[v][a];
                 int nxt = edge[ind].to;
-                if(!edge[ind].cap) continue;
+                if (!edge[ind].cap) continue;
                 dist[nxt] = min(dist[nxt],dist[v] + edge[ind].cost);
             }
         }
@@ -50,36 +50,36 @@ void bellman_ford(int _s) {
 }
 
 pfc dijkstra(int _s,int _t) { // O(V^2)
-    for(int a=0;a<V;++a) {
+    for (int a = 0; a<V; ++a) {
         dist[a] = CINF;
         foi[a] = 0;
     }
     dist[_s] = 0;
     flow[_s] = FINF;
-    while(1) {
+    while (1) {
         int v;
         CTYPE d = CINF;
-        for(int a=0;a<V;++a) {
-            if(foi[a] || dist[a] >= d) continue;
+        for (int a = 0; a < V; ++a) {
+            if (foi[a] || dist[a] >= d) continue;
             d = dist[a];
             v = a;
         }
-        if(d == CINF) break;
+        if (d == CINF) break;
         foi[v] = 1;
-        for(size_t a=0;a<adj[v].size();++a) {
+        for (size_t a = 0; a < adj[v].size(); ++a) {
             int ind = adj[v][a];
             int nxt = edge[ind].to;
-            if(!edge[ind].cap || dist[nxt] <= dist[v] + edge[ind].cost + pot[v] - pot[nxt]) continue;
+            if (!edge[ind].cap || dist[nxt] <= dist[v] + edge[ind].cost + pot[v] - pot[nxt]) continue;
             dist[nxt] = dist[v] + edge[ind].cost + pot[v] - pot[nxt];
             prv[nxt] = v;
             e_ind[nxt] = ind;
             flow[nxt] = min(flow[v],edge[ind].cap);
         }
     }
-    if(dist[_t] == CINF) return pfc(FINF,CINF);
-    for(int a=0;a<V;++a) pot[a] += dist[a];
+    if (dist[_t] == CINF) return pfc(FINF,CINF);
+    for (int a = 0; a < V; ++a) pot[a] += dist[a];
     pfc ret(flow[_t],0);
-    for(int cur = _t; cur != _s; cur = prv[cur]) {
+    for (int cur = _t; cur != _s; cur = prv[cur]) {
         int ind = e_ind[cur];
         edge[ind].cap -= flow[_t];
         edge[ind^1].cap += flow[_t];
@@ -92,7 +92,7 @@ pfc dijkstra(int _s,int _t) { // O(V^2)
 pfc mcmf(int _s,int _t) {
     pfc ret(0,0), got;
     bellman_ford(_s);
-    for(int a=0;a<V;++a) pot[a] = dist[a];
+    for (int a = 0; a < V; ++a) pot[a] = dist[a];
     while( (got = dijkstra(_s,_t)).first != FINF ) ret += got;
     return ret;
 }
@@ -100,5 +100,5 @@ pfc mcmf(int _s,int _t) {
 // Clears mcmf structure
 inline void mcmf_clear() {
     edge.clear();
-    for(int a=0;a<V;++a) adj[a].clear();
+    for (int a = 0; a < V; ++a) adj[a].clear();
 }

@@ -10,22 +10,22 @@ int p[MAXN], base[MAXN] , q[MAXN];
 bool used[MAXN], blossom[MAXN];
 
 int lca ( int a, int b ) {
-    bool used [MAXN] = {0}; 
-    for ( ;; ) {
-        a = base [a];
-        used [a] = true;
-        if ( match[a] == -1 )  break;
+    bool used [MAXN] = {0};
+    while (1) {
+        a = base[a];
+        used[a] = true;
+        if (match[a] == -1)  break;
         a = p[match[a]];
     }
-    for ( ;; ) {
+    while (1) {
         b = base[b];
-        if ( used[b] )  return b;
+        if (used[b])  return b;
         b = p[match[b]];
     }
 }
 
 void mark_path ( int v, int b, int children ) {
-    while ( base[v] != b ) {
+    while (base[v] != b) {
         blossom[base[v]] = blossom[base[match[v]]] = true;
         p[v] = children;
         children = match[v];
@@ -34,36 +34,36 @@ void mark_path ( int v, int b, int children ) {
 } 
  
 int find_path ( int root ) {
-    memset ( used, 0 , sizeof used );
-    memset ( p, - 1 , sizeof p );
-    for ( int i = 0 ; i < n ; ++i )
+    memset(used, 0, sizeof used);
+    memset(p, -1, sizeof p);
+    for (int i = 0 ; i < n ; ++i)
         base[i] = i; 
     used[root] = true;
     int qh = 0 , qt = 0;
     q[qt++] = root;
-    while ( qh < qt ) {
+    while (qh < qt) {
         int v = q[qh++];
-        for ( size_t i = 0; i < adj[v].size(); ++i ) {
+        for (size_t i = 0; i < adj[v].size(); ++i) {
             int to = adj[v][i];
-            if ( base[v] == base[to] || match[v] == to )  continue;
-            if ( to == root || match[to] != -1 && p[match[to]] != -1 ) {
-                int curbase = lca ( v, to );
-                memset ( blossom, 0 , sizeof blossom );
-                mark_path ( v, curbase, to );
-                mark_path ( to, curbase, v );
-                for ( int i = 0 ; i < n ; ++i ) {
-                    if ( blossom[base[i]] ) {
+            if (base[v] == base[to] || match[v] == to)  continue;
+            if (to == root || match[to] != -1 && p[match[to]] != -1) {
+                int curbase = lca (v, to);
+                memset(blossom, 0, sizeof blossom);
+                mark_path(v, curbase, to);
+                mark_path(to, curbase, v);
+                for (int i = 0; i < n; ++i) {
+                    if (blossom[base[i]]) {
                         base[i] = curbase;
-                        if ( !used[i] ) {
+                        if (!used[i]) {
                             used[i] = true;
                             q[qt++] = i;
                         }
                     }
                 }
             }
-            else if ( p[to] == -1 ) {
+            else if (p[to] == -1) {
                 p[to] = v;
-                if ( match[to] == -1 )
+                if (match[to] == -1)
                     return to;
                 to = match[to];
                 used[to] = true;
@@ -78,21 +78,21 @@ int main() {
     // ler grafo
     memset ( match, -1 , sizeof match );
     // otimizacao: comeca com um matching parcial guloso
-    for ( int i = 0 ; i < n ; ++i ) {
-	if ( match[i] == -1 ) {
-            for ( size_t j = 0 ; j < adj[i].size() ; ++j ) {
-                if ( match[ adj[i][j] ] == -1 ) {
-                    match[ adj[i][j] ] = i;
+    for (int i = 0; i < n; ++i) {
+	if (match[i] == -1) {
+            for (size_t j = 0; j < adj[i].size(); ++j) {
+                if (match[adj[i][j]] == -1) {
+                    match[adj[i][j]] = i;
                     match[i] = adj[i][j];
                     break;
                 }
             }
         }
     }
-    for ( int i = 0 ; i < n ; ++ i ) {
-        if ( match[i] == - 1 ) {
+    for (int i = 0; i < n; ++i) {
+        if (match[i] == -1) {
             int v = find_path(i);
-            while ( v != -1 ) {
+            while (v != -1) {
                 int pv = p[v], ppv = match[pv];
                 match[v] = pv, match[pv] = v;
                 v = ppv;

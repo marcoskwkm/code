@@ -31,13 +31,13 @@ bool dinic_bfs(int _s, int _t) {
     dinic_dist[_s] = 0;
     queue<int> q;
     q.push(_s);
-    while(!q.empty() && dinic_dist[_t] == -1) {
+    while (!q.empty() && dinic_dist[_t] == -1) {
         int v = q.front();
         q.pop();
-        for(size_t a = 0; a < adj[v].size(); ++a) {
+        for (size_t a = 0; a < adj[v].size(); ++a) {
             int ind = adj[v][a];
             int nxt = edge[ind].to;
-            if(dinic_dist[nxt] == -1 && edge[ind].cap) {
+            if (dinic_dist[nxt] == -1 && edge[ind].cap) {
                 dinic_dist[nxt] = dinic_dist[v] + 1;
                 q.push(nxt);
             }
@@ -47,13 +47,13 @@ bool dinic_bfs(int _s, int _t) {
 }
 
 FTYPE dinic_dfs(int v, int _t, FTYPE flow) {
-    if(v == _t) return flow;
-    for(int &a = ptr[v]; a < (int)adj[v].size(); ++a) {
+    if (v == _t) return flow;
+    for (int &a = ptr[v]; a < (int)adj[v].size(); ++a) {
         int ind = adj[v][a];
         int nxt = edge[ind].to;
-        if(dinic_dist[nxt] == dinic_dist[v] + 1 && edge[ind].cap) {
+        if (dinic_dist[nxt] == dinic_dist[v] + 1 && edge[ind].cap) {
             FTYPE got = dinic_dfs(nxt, _t, min(flow, edge[ind].cap));
-            if(got) {
+            if (got) {
                 edge[ind].cap -= got;
                 edge[ind^1].cap += got;
                 return got;
@@ -65,9 +65,9 @@ FTYPE dinic_dfs(int v, int _t, FTYPE flow) {
 
 FTYPE dinic(int _s, int _t) {
     FTYPE ret = 0, got;
-    while(dinic_bfs(_s, _t)) {
+    while (dinic_bfs(_s, _t)) {
         memset(ptr, 0, sizeof(ptr));
-        while((got = dinic_dfs(_s, _t, FINF))) ret += got;
+        while ((got = dinic_dfs(_s, _t, FINF))) ret += got;
     }
     return ret;
 }
@@ -80,6 +80,6 @@ void dinic_reset() {
 
 // Clears dinic structure
 inline void dinic_clear() {
-    for(int i = 0; i < MAXV; ++i) adj[i].clear();
+    for (int i = 0; i < MAXV; ++i) adj[i].clear();
     edge.clear();
 }
