@@ -1,14 +1,16 @@
 template<class T> struct Matrix {
-    vector< vector<T> > mat;
+    static const int MAXS = 2;
+    
+    T mat[MAXS][MAXS];
     int n, m;
     Matrix(int N, int M = -1) {
         if (M == -1) M = N;
         n = N, m = M;
-        mat.resize(n);
         for (int i = 0; i < n; i++)
-            mat[i] = vector<T>(m, 0);
+            for (int j = 0; j < m; j++)
+                mat[i][j] = 0;
     }
-    vector<T>& operator[](int i) { return mat[i]; }
+    T* operator[](int i) { return mat[i]; }
 };
 
 template<class T> Matrix<T> operator+ (Matrix<T> a, Matrix<T> b) {

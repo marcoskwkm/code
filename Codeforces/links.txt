@@ -1,5 +1,5 @@
 Contest link:
-http://codeforces.com/contest/<contest number>/
+http://codeforces.com/contest/<contest number>/problem/0
 
 Submission page:
 http://codeforces.com/contest/<contest number>/submit
