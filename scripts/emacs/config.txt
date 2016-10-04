@@ -12,9 +12,10 @@
  )
 
 (setq inhibit-startup-message t)
-(setq-default indent-tabs-mode nil)
-(setq c-default-style "linux"
-          c-basic-offset 4)
+(setq-default indent-tabs-mode nil
+              tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(setq c-default-style "linux")
 (setq shell-command-switch "-lic")
 (global-linum-mode 1)
 (global-hl-line-mode 1)
@@ -41,5 +42,5 @@
 
 ; Transparent background
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(95 50))
-(add-to-list 'default-frame-alist '(alpha 95 50))
+(set-frame-parameter (selected-frame) 'alpha '(85 50))
+(add-to-list 'default-frame-alist '(alpha 85 50))
