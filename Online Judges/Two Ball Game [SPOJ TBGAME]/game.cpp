@@ -1,13 +1,25 @@
-const double EPS = 1e-9;
-const double PI = acos(-1.0);
+#include <bits/stdc++.h>
+using namespace std;
 
-typedef int CTYPE;
+#define debug(args...) fprintf(stderr,args)
+
+typedef long long lint;
+typedef pair<int, int> pii;
+typedef pair<lint, lint> pll;
+
+const int INF = 0x3f3f3f3f;
+const lint LINF = 0x3f3f3f3f3f3f3f3fll;
+
+const double EPS = 1e-9;
+
+typedef double CTYPE;
 
 //( cmp(a,b) _ 0 ) means (a _ b)
 inline int cmp(double a, double b = 0) { return (a < b + EPS) ? (a + EPS < b) ? -1 : 0 : 1; }
 
 struct Point {
     CTYPE x,y;
+    int i;
     Point() {}
     Point(CTYPE xx,CTYPE yy) { x = xx; y = yy; }
     int _cmp(Point q) const {
@@ -22,45 +34,13 @@ struct Point {
 typedef Point Vector;
 typedef vector<Point> Poly;
 
-double norm(Vector &v) { return sqrt(v.x * v.x + v.y * v.y); }
-Vector operator*(double k, const Vector &v) { return Vector(k * v.x, k * v.y); }
-Vector operator/(const Vector &v, double k) { return Vector(v.x / k, v.y / k); }
+double norm(Point &p) { return sqrt(p.x*p.x + p.y*p.y); }
+Point operator*(double k, const Point &p) { return Point(k*p.x, k*p.y); }
+Point operator/(const Point &p, double k) { return Point(p.x / k, p.y / k); }
 Point operator+(const Point &a, const Point &b) { return Point(a.x + b.x, a.y + b.y); }
-Point operator-(const Point &a, const Point &b) { return Point(a.x - b.x, a.y - b.y); }
-CTYPE operator*(const Vector &u, const Vector &v) { return u.x * v.x + u.y * v.y; }
-CTYPE operator^(const Vector &u, const Vector &v) { return u.x * v.y - u.y * v.x; }
-
-// SIGNED area
-double area(vector<Point>& polygon) {
-    double ret = 0;
-    int n = polygon.size();
-    for(int i=0;i<n;++i) {
-        int j = (i == n-1 ?  0 : i+1);
-        ret += polygon[i] ^ polygon[j];
-    }
-    return 0.5 * ret;
-}
-
-// finds polygon centroid (needs SIGNED area)
-double centroid(vector<Point>& polygon) {
-    double S = area(polygon);
-    double ret = 0;
-    int n = polygon.size();
-    for (int i = 0; i < n; ++i) {
-        int j = (i == n-1 ? 0 : i + 1);
-        ret += (polygon[i].x + polygon[j].x) * (polygon[i] ^ polygon[j]);
-    }
-    return ret / 6 / S;
-}
-
-// Distance from r to segment pq
-double point_seg_dist(const Point &r, const Point &p, const Point &q) {
-    Point A = r-q, B = r-p, C = q-p;
-    double a = A*A, b = B*B, c = C*C;
-    if(cmp(b, a+c) >= 0) return sqrt(a);
-    else if(cmp(a, b+c) >= 0) return sqrt(b);
-    else return fabs(A^B)/sqrt(c);
-}
+Point operator-(const Point &a, const Point &b) { return Point(a.x-b.x, a.y-b.y); }
+CTYPE operator*(const Point &a, const Point &b) { return a.x*b.x + a.y*b.y; }
+CTYPE operator^(const Point &a, const Point &b) { return a.x*b.y - a.y*b.x; }
 
 // Whether segments pq and rs have a common point
 bool seg_intersects(const Point &p, const Point &q, const Point &r, const Point &s) {
@@ -71,13 +51,6 @@ bool seg_intersects(const Point &p, const Point &q, const Point &r, const Point 
     if (a || b || p == r || p == s || q == r || q == s) return true;
     int t = (p < r) + (p < s) + (q < r) + (q < s);
     return t != 0 && t != 4;
-}
-
-// Returns the intersection of lines pq and rs. Assumes pq and rs are not parallel.
-Point intersection(const Point &p, const Point &q, const Point &r, const Point &s) {
-    Point a = q - p, b = s - r, c = Point(p ^ q, r ^ s);
-    assert(cmp(a ^ b));
-    return Point(Point(a.x, b.x) ^ c, Point(a.y, b.y) ^ c) / (a ^ b);
 }
 
 // Returns convex hull in clockwise-order.
@@ -105,4 +78,35 @@ Poly convex_hull(vector<Point> poly) {
     for (int i = blen - 2; i > 0; i--)
         top.push_back(bot[i]);
     return top;
+}
+
+const int MAXN = (int)1e5 + 10;
+Point p[MAXN];
+bool in_hull[MAXN];
+
+int main() {
+    int t;
+    for (scanf("%d", &t); t--;) {
+        int n;
+        scanf("%d", &n);
+        Poly poly;
+        for (int i = 0; i < n; i++) {
+            scanf("%lf%lf", &p[i].x, &p[i].y);
+            p[i].i = i;
+            poly.push_back(p[i]);
+            in_hull[i] = 0;
+        }
+        if (!seg_intersects(p[0], p[1], p[2], p[3])) {
+            printf("POSSIBLE\n");
+            continue;
+        }
+        Poly hull = convex_hull(poly);
+        for (const Point &pp: hull) {
+            in_hull[pp.i] = 1;
+            // printf("%.2f, %.2f (%d)\n", pp.x, pp.y, pp.i);
+        }
+
+        printf("%sPOSSIBLE\n", (in_hull[0] && in_hull[1] && in_hull[2] && in_hull[3]) ? "IM" : "");
+    }                
+    return 0;
 }
