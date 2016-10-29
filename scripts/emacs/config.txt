@@ -18,6 +18,7 @@
 (setq c-default-style "linux")
 (setq shell-command-switch "-lic")
 (global-linum-mode 1)
+(setq column-number-mode t)
 (global-hl-line-mode 1)
 (electric-indent-mode 1)
 (set-face-background 'default "#202020")
@@ -26,7 +27,7 @@
 (global-unset-key "\C-z")
 (global-unset-key "\C-x\C-z")
 
-; For fixing indentation with C++ lambda functions
+;; For fixing indentation with C++ lambda functions
 (defadvice c-lineup-arglist (around my activate)
   "Improve indentation of continued C++11 lambda function opened as argument."
   (setq ad-return-value
@@ -40,7 +41,27 @@
             0                           ; no additional indent
           ad-do-it)))                   ; default behavior
 
-; Transparent background
-;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(85 50))
-(add-to-list 'default-frame-alist '(alpha 85 50))
+;; Transparent background
+(defun toggle-transparency ()
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter
+     nil 'alpha
+     (if (eql (cond ((numberp alpha) alpha)
+                    ((numberp (cdr alpha)) (cdr alpha))
+                    ;; Also handle undocumented (<active> <inactive>) form.
+                    ((numberp (cadr alpha)) (cadr alpha)))
+              100)
+         '(85 . 50) '(100 . 100)))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
+
+(defun transparency (value)
+  "Sets the transparency of the frame window. 0=transparent/100=opaque"
+  (interactive "nTransparency Value 0 - 100 opaque:")
+  (set-frame-parameter (selected-frame) 'alpha value))
+
+;; Open .m files in Octave mode
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+
+;; Latex preview pane
+(load-file "~/emacs/latex-preview-pane/latex-preview-pane.el")
