@@ -20,6 +20,26 @@
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 \linespread{1.6} % Double spacing
 
+%--- For theorems/lemmas/etc ---
+\newtheoremstyle{style}
+                {}
+                {}
+                {}
+                {}
+                {\bfseries}
+                {. }
+                { }
+                {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\renewcommand*{\proofname}{Dem}                
+                
+\theoremstyle{style}
+\newtheorem{teo}{Teorema}
+\newtheorem{prop}{Proposição}
+\newtheorem*{defn}{Definição}
+\newtheorem*{cor}{Corolário}
+\theoremstyle{proof}
+
 %-------------------------------------------------------------------------------
 %	MACROS
 %-------------------------------------------------------------------------------
