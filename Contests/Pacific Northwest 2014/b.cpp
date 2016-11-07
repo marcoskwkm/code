@@ -35,13 +35,15 @@ void dfs(int i, vector<int> &anc) {
     anc.pop_back();
 }
 
-void increment(int i) {
-    ancestors_taken[i]++;
-    if (last_opt[i] == ancestors_taken[i])
-        for (int a: ancestors[i])
-            blocked[a]++;
+void decrement(int i) {
+    if (!done[i]) {
+        ancestors_taken[i]--;
+        if (last_opt[i] == ancestors_taken[i])
+            for (int a: ancestors[i])
+                blocked[a]++;
+    }
     for (int nxt: adj[i])
-        increment(nxt);
+        decrement(nxt);
 }
 
 int main() {
@@ -81,7 +83,7 @@ int main() {
         int ans = 0;
         for (int i = 0; i < n; i++) {
             opt[i] = 0;
-            for (int q = 0; q <= (int)ancestors[i].size(); q++) {
+            for (int q = ancestors[i].size(); q >= 0; q--) {
                 val[i][q] = (q + 1)/2 * energy[i][0] + q/2 * energy[i][1];
                 opt[i] = max(opt[i], val[i][q]);
                 if (val[i][q] == opt[i]) last_opt[i] = q;
@@ -89,16 +91,18 @@ int main() {
             ans += opt[i];
         }
 
+        memset(blocked, 0, sizeof(blocked));
+
         for (int i = 0; i < n; i++)
-            if (last_opt[i] == 0)
+            if (last_opt[i] == ancestors[i].size())
                 for (int a: ancestors[i])
                     blocked[a]++;
                     
-        memset(ancestors_taken, 0, sizeof(ancestors_taken));
+        for (int i = 0; i < n; i++)
+            ancestors_taken[i] = ancestors[i].size();
         memset(done, 0, sizeof(done));
         vector<int> sol;
         for (int step = 0; step < n; step++) {
-            bool found = 0;
             for (int i = 0; i < n; i++) {
                 if (done[i] || blocked[i]) continue;
                 if (opt[i] == val[i][ancestors_taken[i]]) {
@@ -107,14 +111,12 @@ int main() {
                         for (int a: ancestors[i])
                             blocked[a]--;
                     done[i] = 1;
-                    increment(i);
-                    found = 1;
+                    decrement(i);
                     break;
                 }
             }
-            if (!found) printf("fuck %d\n", step);
         }        
-        printf("ans = %d\n", ans);
+        printf("%d\n", ans);
         for (int i = 0; i < n; i++) printf("%d ", sol[i] + 1);
         printf("\n");
     }        
