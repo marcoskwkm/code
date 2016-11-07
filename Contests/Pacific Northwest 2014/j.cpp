@@ -30,7 +30,6 @@ CTYPE operator^(const Vector &u, const Vector &v) { return u.x * v.y - u.y * v.x
 
 char grid[MAXD][MAXD];
 
-// Returns convex hull in clockwise-order.
 Poly convex_hull(vector<Point> poly) {
     sort(poly.begin(), poly.end(), [](const Point &a, const Point &b) {
         if (a.x == b.x) return a.y < b.y;
@@ -59,30 +58,51 @@ Poly convex_hull(vector<Point> poly) {
 
 int h, w;
 bool mark[MAXD][MAXD];
+int dpv[MAXD];
+
+int dp[MAXD][2];
+
+int solve(int len) {
+    dp[0][0] = 0;
+    dp[0][1] = INF;
+    for (int i = 0; i < len; i++) {
+        if (dpv[i] == 1) {
+            dp[i + 1][1] = 1 + min(dp[i][0], dp[i][1]);
+            dp[i + 1][0] = dp[i][1];
+        }
+        else {
+            dp[i + 1][1] = INF;
+            dp[i + 1][0] = dp[i][0];
+        }
+    }
+    return dp[len][0];
+}    
 
 int test(int dr, int dc) {
+    if (dr < 0) {
+        dr = -dr;
+        dc = -dc;
+    }
+    else if (dr == 0 && dc < 0) dc = -dc;
+    
     memset(mark, 0, sizeof(mark));
     int ret = 0;
     for (int r = 0; r < h; r++) {
-        int nr = r + dr;
-        if (nr < 0 || nr >= h) continue;
         for (int c = 0; c < w; c++) {
-            int nc = c + dc;
-            if (nc < 0 || nc >= w) continue;
-            mark[r][c] = mark[nr][nc] = 1;
-            if (grid[r][c] == '#' && grid[nr][nc] == '.') {
-                printf("(%d, %d) -/> (%d, %d)\n", r, c, nr, nc);
-                return INF;
+            if (mark[r][c]) continue;
+            int cr = r, cc = c;
+            int len = 0;
+            while (0 <= cr && cr < h && 0 <= cc && cc < w) {
+                mark[cr][cc] = 1;
+                dpv[len++] = (grid[cr][cc] == '#');
+                cr += dr, cc += dc;
             }
-            ret += (grid[r][c] == '#');
-        }        
+            int got = min(INF, solve(len));
+            if (got == INF) return INF;
+            ret += got;
+        }
     }
-    for (int r = 0; r < h; r++)
-        for (int c = 0; c < w; c++)
-            if (!mark[r][c] && grid[r][c] != '.') {
-                printf("failed here! (%d, %d)\n", r, c);
-                return INF;
-            }
+
     return ret;
 }
 
@@ -91,25 +111,26 @@ int main() {
     for (scanf("%d", &t); t--;) {
         scanf("%d%d", &h, &w);
         Poly p;
+        int qx = 0;
         for (int r = 0; r < h; r++) {
             for (int c = 0; c < w; c++) {
                 scanf(" %c", &grid[r][c]);
-                if (grid[r][c] == '#')
+                if (grid[r][c] == '#') {
                     p.push_back(Point(r, c));
+                    qx++;
+                }
             }
         }
         Poly hull = convex_hull(p);
-        int ans = test(0, 0);
-        printf("%d\n", test(0, 3));
-        return 0;
+        int ans = qx;
         for (int i = 0; i < (int)hull.size(); i++) {
             int j = (i + 1) % hull.size();
-            Vector v = p[j] - p[i];
+            Vector v = hull[j] - hull[i];
             if (v.x == 0 && v.y == 0) continue;
             int d = __gcd(abs(v.x), abs(v.y));
             int dx = v.x / d, dy = v.y / d;
             for (int k = 1; k <= d; k++)
-                ans = min(ans, test(dx * j, dy * j));
+                ans = min(ans, test(dx * k, dy * k));
         }
         printf("%d\n", ans);
     }                
