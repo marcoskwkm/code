@@ -33,7 +33,8 @@ template< class C_TYPE, class Compare = less<C_TYPE> > struct ConvexHullOpt {
     void add_line(C_TYPE a, C_TYPE b) {
         Line newline(a, b);
         auto itr = set_slope.lower_bound(newline);
-        auto itr2 = itr == set_slope.end() ? set_end.end() : set_end.lower_bound(*itr);
+        auto itr2 = itr == set_slope.end() ?
+            set_end.end() : set_end.lower_bound(*itr);
         if (itr != set_slope.end()) {
             if (cross(*itr, newline) < itr->end_l) return;
             while (itr != set_slope.end() && cross(*itr, newline) > itr->end_r) {

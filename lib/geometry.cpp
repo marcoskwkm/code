@@ -4,7 +4,9 @@ const double PI = acos(-1.0);
 typedef int CTYPE;
 
 //( cmp(a,b) _ 0 ) means (a _ b)
-inline int cmp(double a, double b = 0) { return (a < b + EPS) ? (a + EPS < b) ? -1 : 0 : 1; }
+inline int cmp(double a, double b = 0) {
+    return (a < b + EPS) ? (a + EPS < b) ? -1 : 0 : 1;
+}
 
 struct Point {
     CTYPE x,y;
@@ -89,11 +91,13 @@ Poly convex_hull(vector<Point> poly) {
     Poly top, bot;
     int tlen = 0, blen = 0;
     for (const Point &p: poly) {
-        while (tlen > 1 && ((top[tlen - 2] - top[tlen - 1])^(p - top[tlen - 1])) <= 0) {
+        while (tlen > 1 &&
+               ((top[tlen - 2] - top[tlen - 1])^(p - top[tlen - 1])) <= 0) {
             tlen--;
             top.pop_back();
         }
-        while (blen > 1 && ((p - bot[blen - 1])^(bot[blen - 2] - bot[blen - 1])) <= 0) {
+        while (blen > 1 &&
+               ((p - bot[blen - 1])^(bot[blen - 2] - bot[blen - 1])) <= 0) {
             blen--;
             bot.pop_back();
         }

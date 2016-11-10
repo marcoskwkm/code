@@ -2,14 +2,14 @@ namespace bap {
     int ind[MAXN], low[MAXN];
     int cnt;
     
-    void bap_dfs(int v, int prev = -1) {
+    void dfs(int v, int prev = -1) {
         ind[v] = low[v] = cnt++;
         int cont = 0;
         bool flag = 0;
         for (int nxt: adj[v]) {
             if (ind[nxt] == -1) {
                 ++cont;
-                bap_dfs(nxt, v);
+                dfs(nxt, v);
                 low[v] = min(low[v], low[nxt]);
                 if (low[nxt] >= ind[v]) flag = 1;
                 if (low[nxt] == ind[nxt]) {

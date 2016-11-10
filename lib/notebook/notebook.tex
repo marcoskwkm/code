@@ -1,0 +1,200 @@
+\documentclass[a4paper,oneside,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[T1]{fontenc}
+\linespread{1.185}
+
+%\usepackage{eulervm}
+\usepackage[landscape,left=.5cm,right=.5cm,top=2.1cm,bottom=.5cm]{geometry}
+
+\setlength{\columnseprule}{0.25pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{ACM ICPC Reference, page \bfseries\thepage}
+\fancyhead[LE,LO]{University of São Paulo}
+
+\usepackage{listings}
+%\usepackage{pxfonts}
+\usepackage[scaled=1.14]{couriers}
+
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+
+\newcommand{\SECTION}[2]{\section*{#1} \addcontentsline{toc}{subsection}{#1} #2 \begin{center}\rule{400pt}{0.25pt}\end{center}}
+\newcommand{\FINALSECTION}[1] {\section*{#1} \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\sourcefile}[1]{\lstinputlisting{#1}}
+%\newcommand{\Csourcefile}[1]{\begin{center}\textbf{#1.cpp}\end{center}\lstinputlisting[language=C, basicstyle=\ttfamily, keywordstyle=\bfseries, showstringspaces=false, morekeywords={ll}]{src/#1.cpp}}
+\newcommand{\Csourcefile}[1]{\lstinputlisting[language=C, basicstyle=\ttfamily, keywordstyle=\bfseries, showstringspaces=false, morekeywords={ll}]{#1.cpp}}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\then}{\Longrightarrow}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\brackets}[1]{\left[#1\right]}
+\newcommand{\braces}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\nequiv}{\not\equiv}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\norm}[1]{\abs{\abs{#1}}}
+\newcommand{\degree}{\ensuremath{^\circ}}
+\newcommand{\defun}[5] {
+    \begin{array}{rrcl}
+#1: & #2 & \longrightarrow & #3 \\
+    & #4 & \longmapsto & #5
+    \end{array}
+}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\stirfst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\stirsnd}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\bell}[1]{\mathcal B_{#1}}
+\newcommand{\seg}[1]{\overline{#1}}
+
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+\title{ACM ICPC Reference}
+\author{University of São Paulo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\scriptsize{}
+\maketitle
+\thispagestyle{fancy}
+
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Start of the contest}
+\SECTION{Template} {
+  \Csourcefile{../template}
+}
+
+\SECTION{Makefile} {
+  \sourcefile{../../templates/Makefile}
+}
+
+\SECTION{Emacs config} {
+  \sourcefile{../emacs.cfg}
+}
+
+\section{Graphs}
+\SECTION{Bridge and articulation point} {
+  \Csourcefile{../bridge_ap}
+}
+
+\SECTION{Dinic maxflow} {
+  \Csourcefile{../dinic}
+}
+
+\SECTION{Edmonds maximum matching} {
+  \Csourcefile{../edmondsMatching}
+}
+
+\SECTION{Eulerian path} {
+  \Csourcefile{../eulerian_path}
+}
+
+\SECTION{Gomory-Hu Tree (flow-equivalent tree)} {
+  \Csourcefile{../gomory_hu}
+}
+
+\SECTION{Min-cost maxflow} {
+  \Csourcefile{../mincostmaxflow}
+}
+
+\SECTION{Tarjan (Strongly Connected Components)} {
+  \Csourcefile{../tarjan}
+}
+
+\section{Strings}
+\SECTION{Aho-Corasick} {
+  \Csourcefile{../aho-corasick}
+}
+
+\SECTION{Hash} {
+  \Csourcefile{../hash}
+}
+
+\SECTION{KMP} {
+  \Csourcefile{../kmp}
+}
+
+\SECTION{Z} {
+  \Csourcefile{../z}
+}
+
+\section{Data structures}
+\SECTION{Convex trick optimization (constant version)} {
+  \Csourcefile{../dp_convex_constant}
+}
+
+\SECTION{Convex trick optimization} {
+  \Csourcefile{../dp_convex}
+}
+
+\SECTION{Heavy-Light decomposition} {
+  \Csourcefile{../heavy-light}
+}
+
+\SECTION{Constant RMQ} {
+  \Csourcefile{../rmq_constant}
+}
+
+\SECTION{Time} {
+  \Csourcefile{../time}
+}
+
+\SECTION{Treap} {
+  \Csourcefile{../treap}
+}
+
+\section{Math}
+\SECTION{Combinatorics} {
+  \Csourcefile{../combo}
+}
+
+\SECTION{Fast Fourier Transform} {
+  \Csourcefile{../fft}
+}
+
+\SECTION{Gaussian elimination} {
+  \Csourcefile{../gaussian}
+}
+
+\SECTION{Miller-Rabin primality test} {
+  \Csourcefile{../miller-rabin}
+}
+
+\SECTION{Simpson integration rule} {
+  \Csourcefile{../numerical}
+}
+
+\section{Geometry}
+\SECTION{2D geometry} {
+  \Csourcefile{../geometry}
+}
+
+\SECTION{3D geometry} {
+  \Csourcefile{../geometry_3d}
+}  
+
+\end{document}

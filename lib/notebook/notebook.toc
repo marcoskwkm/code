@@ -1,0 +1,34 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Start of the contest}{1}
+\contentsline {subsection}{Template}{1}
+\contentsline {subsection}{Makefile}{1}
+\contentsline {subsection}{Emacs config}{1}
+\contentsline {section}{\numberline {2}Graphs}{2}
+\contentsline {subsection}{Bridge and articulation point}{2}
+\contentsline {subsection}{Dinic maxflow}{2}
+\contentsline {subsection}{Edmonds maximum matching}{3}
+\contentsline {subsection}{Eulerian path}{4}
+\contentsline {subsection}{Gomory-Hu Tree (flow-equivalent tree)}{4}
+\contentsline {subsection}{Min-cost maxflow}{5}
+\contentsline {subsection}{Tarjan (Strongly Connected Components)}{6}
+\contentsline {section}{\numberline {3}Strings}{6}
+\contentsline {subsection}{Aho-Corasick}{6}
+\contentsline {subsection}{Hash}{7}
+\contentsline {subsection}{KMP}{7}
+\contentsline {subsection}{Z}{8}
+\contentsline {section}{\numberline {4}Data structures}{8}
+\contentsline {subsection}{Convex trick optimization (constant version)}{8}
+\contentsline {subsection}{Convex trick optimization}{9}
+\contentsline {subsection}{Heavy-Light decomposition}{9}
+\contentsline {subsection}{Constant RMQ}{10}
+\contentsline {subsection}{Time}{10}
+\contentsline {subsection}{Treap}{11}
+\contentsline {section}{\numberline {5}Math}{12}
+\contentsline {subsection}{Combinatorics}{12}
+\contentsline {subsection}{Fast Fourier Transform}{12}
+\contentsline {subsection}{Gaussian elimination}{13}
+\contentsline {subsection}{Miller-Rabin primality test}{13}
+\contentsline {subsection}{Simpson integration rule}{14}
+\contentsline {section}{\numberline {6}Geometry}{14}
+\contentsline {subsection}{2D geometry}{14}
+\contentsline {subsection}{3D geometry}{15}

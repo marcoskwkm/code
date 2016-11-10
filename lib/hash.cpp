@@ -11,8 +11,12 @@ struct Hash {
     }
     bool operator== (Hash that) const { return h1 == that.h1 && h2 == that.h2; }
     bool operator!= (Hash that) const { return h1 != that.h1 || h2 != that.h2; }
-    Hash operator*  (Hash that) const { return Hash((h1*that.h1)%MOD, (h2*that.h2)%MOD); }
-    Hash operator-  (Hash that) const { return Hash( (h1 - that.h1 + MOD)%MOD, (h2 - that.h2 + MOD)%MOD); }
+    Hash operator*  (Hash that) const {
+        return Hash((h1*that.h1)%MOD, (h2*that.h2)%MOD);
+    }
+    Hash operator-  (Hash that) const {
+        return Hash( (h1 - that.h1 + MOD)%MOD, (h2 - that.h2 + MOD)%MOD);
+    }
 };
 
 Hash pot[MAXN];

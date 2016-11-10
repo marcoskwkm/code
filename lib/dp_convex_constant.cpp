@@ -1,6 +1,7 @@
 // Convex Hull Optimization (constant query variant)
 // Requires:
-//   1. Lines are inserted in strict order of slope: increasing -> max, decreasing -> min
+//   1. Lines are inserted in strict order of slope:
+//      increasing -> max, decreasing -> min
 //   2. Queries are made in increasing order of x.
 
 template<class C_TYPE> struct ConvexHullOpt {
@@ -23,7 +24,8 @@ template<class C_TYPE> struct ConvexHullOpt {
 
     void add_line(C_TYPE a, C_TYPE b) {
         Line newline(a, b);
-        while (deq_l < (int)deq.size() && cross(newline, deq.back()) < deq.back().end_l)
+        while (deq_l < (int)deq.size() &&
+               cross(newline, deq.back()) < deq.back().end_l)
             deq.pop_back();
         if (deq_l < (int)deq.size()) newline.end_l = cross(newline, deq.back());
         deq.push_back(newline);

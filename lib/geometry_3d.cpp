@@ -34,14 +34,16 @@ Vector operator^(const Vector &u, const Vector &v) {
 }
 
 // finds Ax + By + Cz + D = 0, given three points on the plane
-tuple<double, double, double, double> get_plane_equation(const Point &p1, const Point &p2, const Point &p3) {
+tuple<double, double, double, double>
+get_plane_equation(const Point &p1, const Point &p2, const Point &p3) {
     Vector u = p2 - p1, v = p3 - p1;
     Vector n = u ^ v;
     return make_tuple(n.x, n.y, n.z, -n.x*p1.x - n.y*p1.y - n.z*p1.z);
 }
 
 // finds Ax + By + Cz + D = 0, given a point and a normal vector
-tuple<double, double, double, double> get_plane_equation(const Point &p, const Vector &n) {
+tuple<double, double, double, double>
+get_plane_equation(const Point &p, const Vector &n) {
     return make_tuple(n.x, n.y, n.z, -(p * n));
 }
 
