@@ -29,9 +29,9 @@ long double dist2(long double x0, long double y0, long double x1, long double y1
 
 long double get_dist(int i, int j) {
     if (!(rect[i].x1 < rect[j].x0 || rect[j].x1 < rect[i].x0))
-        return max(rect[i].y0, rect[j].y0) - min(rect[i].y1, rect[j].y1);
+        return max(0, max(rect[i].y0, rect[j].y0) - min(rect[i].y1, rect[j].y1));
     if (!(rect[i].y1 < rect[j].y0 || rect[j].y1 < rect[i].y0))
-        return max(rect[i].x0, rect[j].x0) - min(rect[i].x1, rect[j].x1);
+        return max(0, max(rect[i].x0, rect[j].x0) - min(rect[i].x1, rect[j].x1));
     long double ret = LINF;
     ret = min(ret, dist2(rect[i].x0, rect[i].y0, rect[j].x0, rect[j].y0));
     ret = min(ret, dist2(rect[i].x0, rect[i].y0, rect[j].x0, rect[j].y1));
@@ -93,8 +93,10 @@ int main() {
         long double ans = l;
         rect[n] = Rectangle(0, 0, u, 0);
         dijkstra(n);
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++) {
             ans = min(ans, dist[i] + max(0, l - rect[i].y1));
+            // printf("dist[%d] = %.2Lf\n", i, dist[i]);
+        }
         cout << fixed << setprecision(6) << ans << endl;
     }    
     return 0;
