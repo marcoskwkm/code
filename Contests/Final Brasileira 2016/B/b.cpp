@@ -34,30 +34,33 @@ int main() {
     int ans = n;
     while (ans > 0) {
         if (lo.begin()->first < a) {
+            ans--;
             int rem = lo.begin()->second;
             lo.erase(lo.begin());
             hi.erase(pii(ncomp[rem], rem));
             for (int nxt: adj[rem]) {
+                if (lo.find(pii(ncomp[nxt],nxt)) == lo.end()) continue;
                 lo.erase(pii(ncomp[nxt], nxt));
                 hi.erase(pii(ncomp[nxt], nxt));
                 ncomp[nxt]--;
                 lo.insert(pii(ncomp[nxt], nxt));
                 hi.insert(pii(ncomp[nxt], nxt));
             }
-            ans--;
         }
+        
         else if (ans - 1 - hi.begin()->first < b) {
+            ans--;
             int rem = hi.begin()->second;
             hi.erase(hi.begin());
             lo.erase(pii(ncomp[rem], rem));
             for (int nxt: adj[rem]) {
+                if (lo.find(pii(ncomp[nxt],nxt)) == lo.end()) continue;
                 lo.erase(pii(ncomp[nxt], nxt));
                 hi.erase(pii(ncomp[nxt], nxt));
                 ncomp[nxt]--;
                 lo.insert(pii(ncomp[nxt], nxt));
                 hi.insert(pii(ncomp[nxt], nxt));
             }
-            ans--;
         }
         else break;
     }
