@@ -15,7 +15,9 @@ int last[30];
 struct KMP {
     vector<int> pattern;
     int len;
+    // f[i] = the size of longest preffix that is a suffix of pattern[0..i-1]
     vector<int> f;
+    
     KMP(vector<int> p) {
         pattern = p;
         len = p.size();
