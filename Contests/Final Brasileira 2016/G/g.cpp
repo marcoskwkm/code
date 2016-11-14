@@ -25,7 +25,7 @@ struct KMP {
             int now = f[i - 1];
             while (1) {
                 int val = p[i - 1];
-                if (val != -1 && val > now - 1) val = -1;
+                if (val != -1 && val > now) val = -1;
                 if (p[now] == val) {
                     f[i] = now + 1;
                     break;
