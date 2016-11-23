@@ -23,65 +23,71 @@ set<InvHill> invhills;
 
 pii get(int pos) {
     if (pos < 1 || pos > n) return pii(pos, pos);
-    debug("get %d\n", pos);
-    pii p = prev(invhills.lower_bound(InvHill(pii(pos, INF), INF)))->first;
-    debug("[%d, %d]\n", p.first, p.second);
     return prev(invhills.lower_bound(InvHill(pii(pos, INF), INF)))->first;
 }
 
+inline void add(int l, int r, int k) {
+    hills.insert(Hill(k, pii(l, r)));
+    invhills.insert(InvHill(pii(l, r), k));
+}
+
+inline void rem(int l, int r, int k) {
+    hills.erase(Hill(k, pii(l, r)));
+    invhills.erase(InvHill(pii(l, r), k));
+}
+
+inline bool compat(lint a, lint b) {
+    if (!a || !b) return 0;
+    return sign(a) == sign(b) || (a > 0 && b < 0);
+}
+
 void upd(int pos, int val) {
+    // debug("upd %d\n", pos);
     if (pos == 0 || pos > n) return;
-    pii before = get(pos);
-    // debug("before(%d) = [%d, %d]\n", pos, before.first, before.second);
+    int before_l, before_r;
+    tie(before_l, before_r) = get(pos);
+    int left_l, left_r, right_l, right_r;
+    tie(left_l, left_r) = get(pos - 1);
+    tie(right_l, right_r) = get(pos + 1);
+
+    if (d[pos] == 0) rem(pos, pos, 0);
+    else rem(before_l, before_r, before_r - before_l + 1);
+    d[pos] += val;
+    // debug("[%d, %d], [%d, %d]\n", left_l, left_r, right_l, right_r);
     if (d[pos] == 0) {
-        hills.erase(Hill(0, pii(pos, pos)));
-        invhills.erase(InvHill(pii(pos, pos), 0));
+        add(pos, pos, 0);
+        if (before_l < pos)
+            add(before_l, pos - 1, pos - before_l);
+        if (before_r > pos)
+            add(pos + 1, before_r, before_r - pos);            
     }
     else {
-        hills.erase(Hill(before.second - before.first + 1, before));
-        invhills.erase(InvHill(before, before.second - before.first + 1));
-    }
-    
-    pii to_left = get(pos - 1), to_right = get(pos + 1);
-    d[pos] += val;
-    if (d[pos] == 0) {
-        hills.insert(Hill(0, pii(pos, pos)));
-        invhills.insert(InvHill(pii(pos, pos), 0));
-    }
-    pii after = get(pos);
-    // debug("after(%d) = [%d, %d]\n", pos, after.first, after.second);
-    if (before.first == pos && after.first < pos) {
-        // debug("extend left\n");
-        hills.erase(Hill(to_left.second - to_left.first + 1, to_left));
-        invhills.erase(InvHill(to_left, to_left.second - to_left.first + 1));
-    }
-    if (before.second == pos && after.second > pos) {
-        // debug("extend right\n");
-        hills.erase(Hill(to_right.second - to_right.first + 1, to_right));
-        invhills.erase(InvHill(to_right, to_right.second - to_right.first + 1));
-    }
-    if (before.first < after.first) {
-        hills.insert(Hill(pos - before.first, pii(before.first, pos - 1)));
-        invhills.insert(InvHill(pii(before.first, pos - 1), pos - before.first));
-    }
-    if (before.second > after.second) {
-        hills.insert(Hill(before.second - pos, pii(pos + 1, before.second)));
-        invhills.insert(InvHill(pii(pos + 1, before.second), before.second - pos));
-    }
-    if (d[pos] != 0) {
-        hills.insert(Hill(after.second - after.first + 1, after));
-        invhills.insert(InvHill(after, after.second - after.first + 1));
-    }
+        int after_l = pos, after_r = pos;
+        if (pos > 1 && compat(d[pos - 1], d[pos])) {
+            after_l = left_l;
+            if (left_r < pos) rem(left_l, left_r, left_r - left_l + 1);
+        }
+        else if (before_l < pos)
+            add(before_l, pos - 1, pos - before_l);
+        if (pos < n && compat(d[pos], d[pos + 1])) {
+            after_r = right_r;
+            if (right_l > pos) rem(right_l, right_r, right_r - right_l + 1);
+        }
+        else if (before_r > pos)
+            add(pos + 1, before_r, before_r - pos);
+        // debug("after = [%d, %d]\n", after_l, after_r);
+        add(after_l, after_r, after_r - after_l + 1);
+    }        
 }
 
 void print_hills() {
-    debug("List of hills:\n");
-    for (int i = 1; i <= n; i++) debug("%3lld ", d[i]);
-    debug("\n");
-    for (Hill h: hills) debug("[%d, %d] (%d)\n", h.second.first, h.second.second, h.first);
-    debug("Inverted hills:\n");
-    for (InvHill h: invhills) debug("[%d, %d] (%d)\n", h.first.first, h.first.second, h.second);
-    debug("---\n");
+    // debug("List of hills:\n");
+    // for (int i = 1; i <= n; i++) debug("%3lld ", d[i]);
+    // debug("\n");
+    // for (Hill h: hills) debug("[%d, %d] (%d)\n", h.second.first, h.second.second, h.first);
+    // debug("Inverted hills:\n");
+    // for (InvHill h: invhills) debug("[%d, %d] (%d)\n", h.first.first, h.first.second, h.second);
+    // debug("---\n");
 }    
             
 int main() {
@@ -117,6 +123,7 @@ int main() {
         int l, r, x;
         scanf("%d%d%d", &l, &r, &x);
         upd(l - 1, x);
+        print_hills();
         upd(r, -x);
         print_hills();
         if (n == 0) printf("1\n");
