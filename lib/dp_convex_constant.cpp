@@ -16,7 +16,7 @@ template<class C_TYPE> struct ConvexHullOpt {
     vector<Line> deq;
     int deq_l;
 
-    C_TYPE cross(const Line &r, const Line &s) {
+    double cross(const Line &r, const Line &s) {
         return double(s.a - r.a) / (r.b - s.b);
     }
 
