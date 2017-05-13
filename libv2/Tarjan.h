@@ -3,13 +3,13 @@ struct Tarjan {
     vector<int> cmp_id;      // component of each vertex
     vector<vector<int>> cmp; // list of each component
 
-    Graph& g;
+    const Graph& g;
     vector<int> ind, low;
     vector<bool> in_stack;
     stack<int> st;
     int pre;
 
-    Tarjan(Graph _g) : g(_g) {
+    Tarjan(const Graph &_g) : g(_g) {
         cmp_id.resize(g.V);
         ind.resize(g.V, -1);
         low.resize(g.V);
@@ -47,4 +47,20 @@ struct Tarjan {
             cmp.push_back(component);
         }
     }
+
+    Graph getContractedGraph() {
+        set<pii> seen;
+        Graph cg(cmp.size());
+        for (int u = 0; u < g.V; u++) {
+            for (int v: g.adj[u]) {
+                if (cmp_id[u] != cmp_id[v]) {
+                    if (seen.find(pii(cmp_id[u], cmp_id[v])) == seen.end()) {
+                        seen.insert(pii(cmp_id[u], cmp_id[v]));
+                        cg.add_edge(cmp_id[u], cmp_id[v]);
+                    }
+                }
+            }
+        }
+        return cg;
+    }                    
 };
