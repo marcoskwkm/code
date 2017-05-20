@@ -1,9 +1,9 @@
 /* A directed graph */
 struct Graph {
-    int V, E;
+    int V;
     vector<vector<int>> adj;
     
-    Graph(int _V) : V(_V) {
+    Graph(int _V) : V(_V), E(0) {
         adj.resize(V);
     }
 
