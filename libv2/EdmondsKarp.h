@@ -1,8 +1,10 @@
-/* Edmonds-Karp algorithm - O(VE^2) */
-namespace EdmondsKarp {
-    const int INF = 0x3f3f3f3f;
+/* Edmonds-Karp maxflow algorithm - O(VE^2) */
+struct EdmondsKarp {
+    FlowGraph &g;
 
-    int augment(int s, int t, FlowGraph &g) {
+    EdmondsKarp(FlowGraph &g) : g(g) {}
+
+    int augment(int s, int t) {
         vector<int> prv(g.V, -1), flow(g.V, INF);
         prv[s] = s;
         queue<int> q({s});
@@ -25,7 +27,7 @@ namespace EdmondsKarp {
         return flow[t];
     }
 
-    int max_flow(int s, int t, FlowGraph &g) {
+    int max_flow(int s, int t) {
         int total_flow = 0;
         while (int flow = augment(s, t, g)) total_flow += flow;
         return total_flow;
