@@ -5,10 +5,8 @@ struct RelabelToFront {
     RelabelToFront(FlowGraph &g) : g(g) {}
 
     int max_flow(int s, int t) {
-        vector<int> ptr(g.V, 0);
-        vector<int> h(g.V, 0);
+        vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1);
         vector<int> e(g.V, 0);
-        vector<int> nxt(g.V, -1);
         h[s] = g.V;
         int curr = -1;
         for (int v = 0; v < g.V; v++) {
@@ -28,7 +26,6 @@ struct RelabelToFront {
 
         int head = curr, last = -1;
         while (curr != -1) {
-            int v = curr;
             bool relabeled = 0;
             while (e[v] > 0) {
                 if (ptr[v] == (int)g.adj[v].size()) {
@@ -47,19 +44,13 @@ struct RelabelToFront {
                 }
                 ptr[v]++;
             }
-            if (relabeled) {
-                if (last != -1) {
-                    nxt[last] = nxt[v];
-                    nxt[v] = head;
-                    head = v;
-                }
-                last = -1;
-                curr = v;
+            if (relabeled && last != -1) {
+                nxt[last] = nxt[v];
+                nxt[v] = head;
+                head = v;
             }
-            else {
-                last = curr;
-                curr = nxt[curr];
-            }
+            last = curr;
+            curr = nxt[curr];
         }
 
         return e[t];
