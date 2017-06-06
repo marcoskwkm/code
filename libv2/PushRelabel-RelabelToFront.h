@@ -26,28 +26,30 @@ struct RelabelToFront {
 
         int head = curr, last = -1;
         while (curr != -1) {
-            bool relabeled = 0;
-            while (e[v] > 0) {
-                if (ptr[v] == (int)g.adj[v].size()) {
-                    h[v]++;
-                    ptr[v] = 0;
-                    relabeled = 1;
+            if (e[curr]) {
+                for (int &p = ptr[curr]; p < (int)g.adj[curr].size(); p++) {
+                    int i = g.adj[curr][p];
+                    int w = g.edges[i].v;
+                    if (h[w] < h[curr] && g.edges[i].cap) {
+                        int f = min(g.edges[i].cap, e[curr]);
+                        g.edges[i].cap -= f;
+                        g.edges[i^1].cap += f;
+                        e[w] += f;
+                        e[curr] -= f;
+                        if (!e[curr]) break;
+                    }
                 }
-                int i = g.adj[v][ptr[v]];
-                int w = g.edges[i].v;
-                if (g.edges[i].cap && h[v] == h[w] + 1) {
-                    int f = min(g.edges[i].cap, e[v]);
-                    g.edges[i].cap -= f;
-                    g.edges[i^1].cap += f;
-                    e[w] += f;
-                    e[v] -= f;
+                if (e[curr]) {
+                    ptr[curr] = 0;
+                    h[curr]++;
+                    if (last != -1) {
+                        nxt[last] = nxt[curr];
+                        nxt[curr] = head;
+                        last = -1;
+                        head = curr;
+                    }
+                    continue;
                 }
-                ptr[v]++;
-            }
-            if (relabeled && last != -1) {
-                nxt[last] = nxt[v];
-                nxt[v] = head;
-                head = v;
             }
             last = curr;
             curr = nxt[curr];

@@ -1,8 +1,8 @@
-/* Generic Push-Relabel maxflow algorithm - O(EV^2) */
-struct PushRelabel {
+/* Push-Relabel maxflow algorithm with FIFO - O(V^3) */
+struct PushRelabelFIFO {
     FlowGraph &g;
 
-    PushRelabel(FlowGraph &_g) : g(_g) {}
+    PushRelabelFIFO(FlowGraph &_g) : g(_g) {}
 
     int max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0);
