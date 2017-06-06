@@ -7,7 +7,7 @@ struct Dinic {
     vector<int> ptr, dist;
     FlowGraph &g;
 
-    Dinic(FlowGraph &g) : g(g) {
+    Dinic(FlowGraph &_g) : g(_g) {
         ptr.resize(g.V);
         dist.resize(g.V);
     }

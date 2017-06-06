@@ -2,7 +2,7 @@
 struct RelabelToFront {
     FlowGraph &g;    
 
-    RelabelToFront(FlowGraph &g) : g(g) {}
+    RelabelToFront(FlowGraph &_g) : g(_g) {}
 
     int max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1);

@@ -2,7 +2,7 @@
 struct PushRelabel {
     FlowGraph &g;
 
-    PushRelabel(FlowGraph &g) : g(g) {}
+    PushRelabel(FlowGraph &_g) : g(_g) {}
 
     int max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0);

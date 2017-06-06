@@ -2,14 +2,14 @@
 struct FlowGraph {
     struct Edge {
         int v, cap;
-        Edge(int v, int cap) : v(v), cap(cap) {}
+        Edge(int _v, int _cap) : v(_v), cap(_cap) {}
     };
 
     int V;
     vector<Edge> edges;
     vector<vector<int>> adj;
 
-    FlowGraph(int V) : V(V) {
+    FlowGraph(int _V) : V(_V) {
         adj.resize(V);
     }
 
