@@ -1,4 +1,4 @@
-/* Relabel-to-front maxflow algorithm - O(V^3) */
+/* Push-Relabel maxflow algorithm: Relabel-to-front rule - O(V^3) */
 struct RelabelToFront {
     FlowGraph &g;    
 

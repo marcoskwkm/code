@@ -1,4 +1,4 @@
-/* Push-Relabel maxflow algorithm with FIFO - O(V^3) */
+/* Push-Relabel maxflow algorithm: FIFO rule - O(V^3) */
 struct PushRelabelFIFO {
     FlowGraph &g;
 
