@@ -1,0 +1,13 @@
+#include <cassert>
+
+long long GetNumFlagpoles() {
+  return 2LL;
+}
+
+long long GetHeight(long long i) {
+  switch ((int)i) {
+    case 0: return 1234LL;
+    case 1: return 1234LL;
+    default: assert(0);
+  }
+}
