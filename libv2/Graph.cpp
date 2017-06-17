@@ -3,7 +3,7 @@ struct Graph {
     int V;
     vector<vector<int>> adj;
     
-    Graph(int _V) : V(_V), E(0) {
+    Graph(int _V) : V(_V) {
         adj.resize(V);
     }
 
