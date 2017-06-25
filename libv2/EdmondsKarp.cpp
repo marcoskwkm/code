@@ -1,7 +1,5 @@
 /* Edmonds-Karp maxflow algorithm - O(VE^2) */
 struct EdmondsKarp {
-    const int INF = 0x3f3f3f3f;
-    
     FlowGraph &g;
 
     EdmondsKarp(FlowGraph &_g) : g(_g) {}

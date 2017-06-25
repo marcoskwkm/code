@@ -9,9 +9,7 @@ struct FlowGraph {
     vector<Edge> edges;
     vector<vector<int>> adj;
 
-    FlowGraph(int _V) : V(_V) {
-        adj.resize(V);
-    }
+    FlowGraph(int _V) : V(_V) { adj.resize(V); }
 
     void add_edge(int u, int v, int cap) {
         adj[u].push_back(edges.size());
