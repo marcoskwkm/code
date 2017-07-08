@@ -36,8 +36,8 @@ CTYPE operator^(const Vector &u, const Vector &v) { return u.x * v.y - u.y * v.x
 double area(vector<Point>& polygon) {
     double ret = 0;
     int n = polygon.size();
-    for(int i=0;i<n;++i) {
-        int j = (i == n-1 ?  0 : i+1);
+    for(int i = 0; i < n; ++i) {
+        int j = (i == n - 1 ?  0 : i + 1);
         ret += polygon[i] ^ polygon[j];
     }
     return 0.5 * ret;
@@ -109,4 +109,19 @@ Poly convex_hull(vector<Point> poly) {
     for (int i = blen - 2; i > 0; i--)
         top.push_back(bot[i]);
     return top;
+}
+
+// Checks whether given point is inside a convex polygon.
+// Assumes polygon vertices are given in CCW order.
+bool in_polygon(const Point &p, const Poly &poly) {
+    Vector vp = p - poly[0];
+    if (((poly[1] - poly[0]) ^ vp) < 0) return 0;
+    int l = 1, r = poly.size() - 1;
+    while (l < r) {
+        int mid = (l + r + 1) / 2;
+        if (((poly[mid] - poly[0]) ^ vp) > 0) l = mid;
+        else r = mid - 1;
+    }
+    if (l == (int)poly.size() - 1) return 0;
+    return ((poly[l + 1] - poly[l]) ^ (p - poly[l])) > 0;
 }
