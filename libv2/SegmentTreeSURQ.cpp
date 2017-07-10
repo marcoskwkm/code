@@ -1,4 +1,4 @@
-// Single update range query Segtree
+// Single update range query segtree
 struct SegmentTree {
     struct Node {
         lint sum, best_l, best_r, best;
@@ -19,7 +19,7 @@ struct SegmentTree {
     int n;
 
     SegmentTree(const vector<int> &v) : n(v.size()) {
-        tree.resize(4*n);
+        tree.resize(4 * n);
         build(0, 0, n - 1, v);
     }
 
