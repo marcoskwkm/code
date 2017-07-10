@@ -26,6 +26,10 @@
 (set-face-background 'hl-line "#003399")
 (global-unset-key "\C-z")
 (global-unset-key "\C-x\C-z")
+(c-set-offset 'case-label '+) ; indents switch-case block
+
+;; Hooks C-c c to compile
+(global-set-key (kbd "C-c c") 'compile)
 
 ;; For fixing indentation with C++ lambda functions
 (defadvice c-lineup-arglist (around my activate)
