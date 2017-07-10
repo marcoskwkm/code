@@ -1,0 +1,6 @@
+5
+sort 0 14
+sort 6 20
+cswap 4 7
+sort 0 14
+cswap 4 7
