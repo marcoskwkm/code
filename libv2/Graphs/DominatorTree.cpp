@@ -1,3 +1,4 @@
+// O(ElogV) implementation of a dominator tree
 struct DominatorTree {
     const Graph &g;
 
@@ -28,7 +29,7 @@ struct DominatorTree {
             link(prv[w], w);
             for (int v: bucket[prv[w]]) {
                 int u = eval(v);
-                idom[v] = (pre[sdom[u]] < pre[sdom[v]]) ? u : prv[w];
+                idom[v] = (pre[sdom[u]] == pre[sdom[v]]) ? prv[w] : u;
             }
             bucket[prv[w]].clear();
         }
