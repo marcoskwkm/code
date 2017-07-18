@@ -29,7 +29,7 @@ struct DominatorTree {
             link(prv[w], w);
             for (int v: bucket[prv[w]]) {
                 int u = eval(v);
-                idom[v] = (pre[sdom[u]] == pre[sdom[v]]) ? prv[w] : u;
+                idom[v] = (pre[sdom[u]] == pre[sdom[v]]) ? sdom[v] : u;
             }
             bucket[prv[w]].clear();
         }
