@@ -29,7 +29,7 @@ struct DominatorTree {
             link(prv[w], w);
             for (int v: bucket[prv[w]]) {
                 int u = eval(v);
-                idom[v] = (pre[sdom[u]] == pre[sdom[v]]) ? sdom[v] : u;
+                idom[v] = (u == v) ? sdom[v] : u;
             }
             bucket[prv[w]].clear();
         }
@@ -56,19 +56,13 @@ struct DominatorTree {
         }
     }
 
-    inline int eval(int v) {
+    int eval(int v) {
         if (ancestor[v] == -1) return v;
-        compress(v);
+        if (ancestor[ancestor[v]] == -1) return label[v];
+        int u = eval(ancestor[v]);
+        if (pre[sdom[u]] < pre[sdom[label[v]]]) label[v] = u;
+        ancestor[v] = ancestor[u];
         return label[v];
-    }
-
-    void compress(int v) {
-        if (ancestor[ancestor[v]] != -1) {
-            compress(ancestor[v]);
-            if (pre[sdom[label[ancestor[v]]]] < pre[sdom[label[v]]])
-                label[v] = label[ancestor[v]];
-            ancestor[v] = ancestor[ancestor[v]];
-        }
     }
 
     inline void link(int u, int v) {
