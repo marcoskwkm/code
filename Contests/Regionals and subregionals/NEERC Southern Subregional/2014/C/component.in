@@ -1,0 +1,19 @@
+4
+0 2
+enabled=true
+foreground=white
+1 2
+enabled=false
+fontSize=12
+2 3
+enabled=true
+foreground=black
+caption=OK
+2 1
+fontSize=10
+5
+3 enabled
+4 enabled
+3 fontSize
+4 foreground
+2 caption
