@@ -15,7 +15,7 @@ struct SegmentTree {
                 max(best_r + that.best_l, max(best, that.best)));
         }
     };
-    const Node NEUTRAL = Node(0, -LINF, -LINF, -LINF);
+    const Node ID = Node(0, -LINF, -LINF, -LINF);
 
     vector<Node> tree;
     int n;
@@ -40,7 +40,7 @@ struct SegmentTree {
     Node update(int x, int val) { return update(0, 0, n - 1, x, val); }
 
     Node query(int i, int l, int r, int ql, int qr) {
-        if (qr < l || r < ql) return NEUTRAL;
+        if (qr < l || r < ql) return ID;
         if (ql <= l && r <= qr) return tree[i];
         int L = 2*i + 1, R = 2*i + 2, mid = (l + r) / 2;
         return query(L, l, mid, ql, qr) + query(R, mid + 1, r, ql, qr);
