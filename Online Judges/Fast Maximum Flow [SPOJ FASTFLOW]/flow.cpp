@@ -1,12 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define debug(args...) fprintf(stderr,args)
+ 
+typedef long long lint;
+typedef pair<int, int> pii;
+typedef pair<lint, lint> pll;
+typedef tuple<int, int, int> tiii;
+ 
+const int INF = 0x3f3f3f3f;
+const lint LINF = 0x3f3f3f3f3f3f3f3fll;
+ 
+/* Data structure to represent a network flow graph */
+template<class FTYPE> struct FlowGraph {
+    struct Edge {
+        int v;
+        FTYPE cap;
+        Edge(int _v, FTYPE _cap) : v(_v), cap(_cap) {}
+    };
+ 
+    int V;
+    vector<Edge> edges;
+    vector<vector<int>> adj;
+ 
+    FlowGraph(int _V) : V(_V) { adj.resize(V); }
+ 
+    void add_edge(int u, int v, FTYPE cap) {
+        adj[u].push_back(edges.size());
+        edges.push_back(Edge(v, cap));
+        adj[v].push_back(edges.size());
+        edges.push_back(Edge(u, 0));
+    }
+};
+ 
 /* 
    Push-Relabel maxflow algorithm: FIFO rule - O(V^3) 
    Implements Gap heuristic.
 */
 template<class FTYPE> struct PushRelabelFIFOGap {
     FlowGraph<FTYPE> &g;
-
+ 
     PushRelabelFIFOGap(FlowGraph<FTYPE> &_g) : g(_g) {}
-
+ 
     FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), hc(2*g.V, 0);
         vector<FTYPE> e(g.V, 0);
@@ -22,7 +57,7 @@ template<class FTYPE> struct PushRelabelFIFOGap {
             g.edges[i^1].cap = g.edges[i].cap;
             g.edges[i].cap = 0;
         }
-
+ 
         while (!q.empty()) {
             int v = q.front();
             for (int &p = ptr[v]; p < (int)g.adj[v].size(); p++) {
@@ -58,7 +93,22 @@ template<class FTYPE> struct PushRelabelFIFOGap {
             }
             else q.pop();
         }
-
+ 
         return e[t];
     }
 };
+ 
+int main() {
+    int n, m;
+    scanf("%d%d", &n, &m);
+    FlowGraph<lint> g(n + 1);
+    for (int i = 0; i < m; i++) {
+        int u, v, c;
+        scanf("%d%d%d", &u, &v, &c);
+        g.add_edge(u, v, c);
+        g.add_edge(v, u, c);
+    }
+    PushRelabelFIFOGap<lint> mf(g);
+    printf("%lld\n", mf.max_flow(1, n));
+    return 0;
+}

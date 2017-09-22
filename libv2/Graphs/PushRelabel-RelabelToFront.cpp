@@ -1,12 +1,12 @@
 /* Push-Relabel maxflow algorithm: Relabel-to-front rule - O(V^3) */
-struct RelabelToFront {
-    FlowGraph &g;    
+template<class FTYPE> struct RelabelToFront {
+    FlowGraph<FTYPE> &g;    
 
-    RelabelToFront(FlowGraph &_g) : g(_g) {}
+    RelabelToFront(FlowGraph<FTYPE> &_g) : g(_g) {}
 
-    int max_flow(int s, int t) {
+    FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1);
-        vector<int> e(g.V, 0);
+        vector<FTYPE> e(g.V, 0);
         h[s] = g.V;
         int curr = -1;
         for (int v = 0; v < g.V; v++) {
@@ -31,7 +31,7 @@ struct RelabelToFront {
                     int i = g.adj[curr][p];
                     int w = g.edges[i].v;
                     if (h[w] < h[curr] && g.edges[i].cap) {
-                        int f = min(g.edges[i].cap, e[curr]);
+                        FTYPE f = min(g.edges[i].cap, e[curr]);
                         g.edges[i].cap -= f;
                         g.edges[i^1].cap += f;
                         e[w] += f;

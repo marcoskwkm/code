@@ -1,12 +1,12 @@
 /* Push-Relabel maxflow algorithm: Highest label rule - O(V^2*E^1/2) */
-struct PushRelabelMaxHeight {
-    FlowGraph &g;
+template<class FTYPE> struct PushRelabelMaxHeight {
+    FlowGraph<FTYPE> &g;
 
-    PushRelabelMaxHeight(FlowGraph &_g) : g(_g) {}
+    PushRelabelMaxHeight(FlowGraph<FTYPE> &_g) : g(_g) {}
 
-    int max_flow(int s, int t) {
+    FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1), hv(2*g.V, -1);
-        vector<int> e(g.V, 0);
+        vector<FTYPE> e(g.V, 0);
         h[s] = g.V;
         for (int i: g.adj[s]) {
             int w = g.edges[i].v;
@@ -28,7 +28,7 @@ struct PushRelabelMaxHeight {
                     int i = g.adj[v][p];
                     int w = g.edges[i].v;
                     if (h[w] < h[v] && g.edges[i].cap) {
-                        int f = min(g.edges[i].cap, e[v]);
+                        FTYPE f = min(g.edges[i].cap, e[v]);
                         g.edges[i].cap -= f;
                         g.edges[i^1].cap += f;
                         if (!e[w] && w != t) {

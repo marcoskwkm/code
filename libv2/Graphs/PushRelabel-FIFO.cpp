@@ -1,12 +1,12 @@
 /* Push-Relabel maxflow algorithm: FIFO rule - O(V^3) */
-struct PushRelabelFIFO {
-    FlowGraph &g;
+template<class FTYPE> struct PushRelabelFIFO {
+    FlowGraph<FTYPE> &g;
 
-    PushRelabelFIFO(FlowGraph &_g) : g(_g) {}
+    PushRelabelFIFO(FlowGraph<FTYPE> &_g) : g(_g) {}
 
-    int max_flow(int s, int t) {
+    FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0);
-        vector<int> e(g.V, 0);
+        vector<FTYPE> e(g.V, 0);
         h[s] = g.V;
         queue<int> q;
         for (int i: g.adj[s]) {
@@ -25,7 +25,7 @@ struct PushRelabelFIFO {
                 int i = g.adj[v][p];
                 int w = g.edges[i].v;
                 if (h[w] < h[v] && g.edges[i].cap) {
-                    int f = min(g.edges[i].cap, e[v]);
+                    FTYPE f = min(g.edges[i].cap, e[v]);
                     g.edges[i].cap -= f;
                     g.edges[i^1].cap += f;
                     if (!e[w] && w != t) q.push(w);

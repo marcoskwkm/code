@@ -2,14 +2,14 @@
    Push-Relabel maxflow algorithm: Relabel-to-front rule - O(V^3) 
    Implements Gap heuristic
 */
-struct RelabelToFrontGap {
-    FlowGraph &g;    
+template<class FTYPE> struct RelabelToFrontGap {
+    FlowGraph<FTYPE> &g;    
 
-    RelabelToFrontGap(FlowGraph &_g) : g(_g) {}
+    RelabelToFrontGap(FlowGraph<FTYPE> &_g) : g(_g) {}
 
-    int max_flow(int s, int t) {
+    FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1), hc(2*g.V, 0);
-        vector<int> e(g.V, 0);
+        vector<FTYPE> e(g.V, 0);
         h[s] = g.V;
         hc[g.V] = 1; hc[0] = g.V - 1;
         int curr = -1;
@@ -35,7 +35,7 @@ struct RelabelToFrontGap {
                     int i = g.adj[curr][p];
                     int w = g.edges[i].v;
                     if (h[w] < h[curr] && g.edges[i].cap) {
-                        int f = min(g.edges[i].cap, e[curr]);
+                        FTYPE f = min(g.edges[i].cap, e[curr]);
                         g.edges[i].cap -= f;
                         g.edges[i^1].cap += f;
                         e[w] += f;

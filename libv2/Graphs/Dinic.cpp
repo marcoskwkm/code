@@ -3,11 +3,11 @@
   O(EV^(2/3)) for unit capacities
   O(EV^(1/2)) for bipartite graphs
 */
-struct Dinic {
+template<class FTYPE> struct Dinic {
     vector<int> ptr, dist;
-    FlowGraph &g;
+    FlowGraph<FTYPE> &g;
 
-    Dinic(FlowGraph &_g) : g(_g) {
+    Dinic(FlowGraph<FTYPE> &_g) : g(_g) {
         ptr.resize(g.V);
         dist.resize(g.V);
     }
@@ -31,13 +31,13 @@ struct Dinic {
         return dist[t] != -1;
     }
 
-    int dfs(int v, int t, int flow) {
+    FTYPE dfs(int v, int t, FTYPE flow) {
         if (v == t) return flow;
         for (int &p = ptr[v]; p < (int)g.adj[v].size(); p++) {
             int i = g.adj[v][p];
             int nxt = g.edges[i].v;
             if (dist[nxt] == dist[v] + 1 && g.edges[i].cap) {
-                int got = dfs(nxt, t, min(flow, g.edges[i].cap));
+                FTYPE got = dfs(nxt, t, min(flow, g.edges[i].cap));
                 if (got) {
                     g.edges[i].cap -= got;
                     g.edges[i^1].cap += got;
@@ -48,11 +48,12 @@ struct Dinic {
         return 0;
     }
 
-    int max_flow(int s, int t) {
-        int ret = 0;
+    FTYPE max_flow(int s, int t) {
+        FTYPE ret = 0;
         while (bfs(s, t)) {
             fill(ptr.begin(), ptr.end(), 0);
-            while (int got = dfs(s, t, INF)) ret += got;
+            while (FTYPE got = dfs(s, t, numeric_limits<FTYPE>::max()))
+                ret += got;
         }
         return ret;
     }

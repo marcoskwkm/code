@@ -2,17 +2,20 @@
    Minimum cost maximum flow: Successive Shortest Path implementation
    O(E*V + U*V^2), where U is the maximum flow
 */
-struct MinCostMaxFlowSSP {
-    CostFlowGraph &g;
-    vector<int> d, p;
-
-    MinCostMaxFlowSSP(CostFlowGraph &_g) : g(_g) {
+template<class FTYPE, class CTYPE> struct MinCostMaxFlowSSP {
+    static const CTYPE CINF = numeric_limits<CTYPE>::max() / 2;
+    static const FTYPE FINF = numeric_limits<FTYPE>::max() / 2;
+    
+    CostFlowGraph<FTYPE, CTYPE> &g;
+    vector<CTYPE> d, p;
+ 
+    MinCostMaxFlowSSP(CostFlowGraph<FTYPE, CTYPE> &_g) : g(_g) {
         d.resize(g.V);
         p.resize(g.V);
     }
-
+ 
     void init_p(int s) {
-        fill(d.begin(), d.end(), INF);
+        fill(d.begin(), d.end(), CINF);
         d[s] = 0;
         queue<int> q({s});
         vector<bool> queued(g.V, 0);
@@ -35,26 +38,28 @@ struct MinCostMaxFlowSSP {
         for (int v = 0; v < g.V; v++)
             p[v] = d[v];
     }
-
-    pair<int, int> augment(int s, int t) {
-        fill(d.begin(), d.end(), INF);
+ 
+    pair<FTYPE, CTYPE> augment(int s, int t) {
+        fill(d.begin(), d.end(), CINF);
         d[s] = 0;
         vector<bool> done(g.V, 0);
-        vector<int> prv(g.V, -1), flow(g.V);
-        flow[s] = INF;
+        vector<int> prv(g.V, -1);
+        vector<FTYPE> flow(g.V);
+        flow[s] = FINF;
         while (1) {
             int v;
-            int dist_v = INF;
+            CTYPE dist_v = CINF;
             for (int w = 0; w < g.V; w++) {
                 if (!done[w] && d[w] < dist_v) {
                     v = w;
                     dist_v = d[w];
                 }
             }
-            if (dist_v == INF) break;
+            if (dist_v == CINF) break;
             for (int i: g.adj[v]) {
                 int w = g.edges[i].v;
-                int cap = g.edges[i].cap, cst = g.edges[i].cst;
+                FTYPE cap = g.edges[i].cap;
+                CTYPE cst = g.edges[i].cst;
                 if (cap && d[w] > d[v] + cst + p[v] - p[w]) {
                     d[w] = d[v] + cst + p[v] - p[w];
                     prv[w] = i;
@@ -63,10 +68,10 @@ struct MinCostMaxFlowSSP {
             }
             done[v] = 1;
         }
-        if (d[t] == INF) return make_pair(-1, 0);
+        if (d[t] == CINF) return make_pair(-1, 0);
         for (int v = 0; v < g.V; v++) p[v] += d[v];
-
-        int flow_cost = 0;
+ 
+        CTYPE flow_cost = 0;
         for (int v = t; v != s; v = g.edges[prv[v]^1].v) {
             g.edges[prv[v]].cap -= flow[t];
             g.edges[prv[v]^1].cap += flow[t];
@@ -74,10 +79,10 @@ struct MinCostMaxFlowSSP {
         }
         return make_pair(flow[t], flow_cost);
     }
-
+ 
     // Returns a pair (max flow, min cost)
-    pair<int, int> mcmf(int s, int t) {
-        pair<int, int> ret(0, 0), aug;
+    pair<FTYPE, CTYPE> mcmf(int s, int t) {
+        pair<FTYPE, CTYPE> ret(0, 0), aug;
         init_p(s);
         while ((aug = augment(s, t)).first != -1) {
             ret.first += aug.first;
