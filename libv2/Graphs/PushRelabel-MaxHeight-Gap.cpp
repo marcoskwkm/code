@@ -2,14 +2,14 @@
    Push-Relabel maxflow algorithm: Highest label rule - O(V^2*E^1/2) 
    Implements Gap heuristic.
 */
-struct PushRelabelMaxHeightGap {
-    FlowGraph &g;
+template<class FTYPE> struct PushRelabelMaxHeightGap {
+    FlowGraph<FTYPE> &g;
 
-    PushRelabelMaxHeightGap(FlowGraph &_g) : g(_g) {}
+    PushRelabelMaxHeightGap(FlowGraph<FTYPE> &_g) : g(_g) {}
 
-    int max_flow(int s, int t) {
+    FTYPE max_flow(int s, int t) {
         vector<int> ptr(g.V, 0), h(g.V, 0), nxt(g.V, -1), hv(2*g.V, -1), hc(2*g.V, 0);
-        vector<int> e(g.V, 0);
+        vector<FTYPE> e(g.V, 0);
         h[s] = g.V;
         hc[g.V] = 1; hc[0] = g.V - 1;
         for (int i: g.adj[s]) {
