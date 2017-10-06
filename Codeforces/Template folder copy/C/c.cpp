@@ -11,6 +11,6 @@ const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 
 int main() {
-    //You can use C++11 !
+
     return 0;
 }
