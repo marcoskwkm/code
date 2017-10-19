@@ -17,7 +17,7 @@ vector<lint> FWHT(vector<lint> v, int type, FWHT_OP op) {
                     v[i + len + j] = T[op][2] * x + T[op][3] * y;
                 }
                 else {
-                    v[i + j] = I[op][0] * x + T[op][1] * y;
+                    v[i + j] = I[op][0] * x + I[op][1] * y;
                     v[i + len + j] = I[op][2] * x + I[op][3] * y;
                 }
             }
