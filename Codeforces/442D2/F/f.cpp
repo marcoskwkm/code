@@ -17,7 +17,7 @@ int t[MAXN], v[MAXN];
 lint acc[MAXN];
 lint ans[MAXN];
 int id[MAXN][3];
-int freq[MAXN];
+int fp[4 * MAXN], fm[4 * MAXN];
 
 int n, k;
 
@@ -25,27 +25,27 @@ lint cur = 0;
 int cl, cr;
 
 void add_r(int i) {
-    cur += freq[id[i][0]];
-    freq[id[i][1]]++;
-    // debug("f[%lld]++\n", acc[i]);
-    // debug("add_r %d: cur = %lld\n", i, cur);
+    fp[id[i][1]]++;
+    fm[id[i - 1][1]]++;
+    cur += fm[id[i][0]];    
 }
 
 void rem_r(int i) {
-    freq[id[i][1]]--;
-    cur -= freq[id[i][0]];
+    cur -= fm[id[i][0]];
+    fp[id[i][1]]--;
+    fm[id[i - 1][1]]--;
 }
 
 void add_l(int i) {
-    cur += freq[id[i][2]];
-    freq[id[i][1]]++;
+    fp[id[i][1]]++;
+    fm[id[i - 1][1]]++;
+    cur += fp[id[i - 1][2]];
 }
 
 void rem_l(int i) {
-    freq[id[i][1]]--;
-    cur -= freq[id[i][2]];
-    // debug("f[%lld]--\n", acc[i]);
-    // debug("rem_r %d: cur = %lld\n", i, cur);
+    cur -= fp[id[i - 1][2]];
+    fp[id[i][1]]--;
+    fm[id[i - 1][1]]--;
 }    
 
 int main() {
@@ -57,15 +57,16 @@ int main() {
         scanf("%d", &v[i]);
         if (t[i] == 2) v[i] *= -1;
         acc[i] = acc[i - 1] + v[i];
+    }
+    for (int i = 0; i <= n; i++) {
         cj.insert(acc[i]);
         cj.insert(acc[i] - k);
         cj.insert(acc[i] + k);
     }
-    cj.insert(0);
     map<lint, int> comp;
     int foo = 0;
     for (lint x: cj) comp[x] = foo++;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 0; i <= n; i++) {
         id[i][0] = comp[acc[i] - k];
         id[i][1] = comp[acc[i]];
         id[i][2] = comp[acc[i] + k];
@@ -86,14 +87,13 @@ int main() {
         return a1 / SQ < b1 / SQ;
     });
 
-    freq[comp[0]] = 1;
     cl = 1, cr = 0;
     for (tiii query: queries) {
         int l, r, i;
         tie(l, r, i) = query;
         while (cr < r) add_r(++cr);
-        while (cr > r) rem_r(cr--);
         while (cl < l) rem_l(cl++);
+        while (cr > r) rem_r(cr--);
         while (cl > l) add_l(--cl);
         ans[i] = cur;
         // debug("query %d %d = %lld\n", l, r, cur);
