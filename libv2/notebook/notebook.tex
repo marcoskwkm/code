@@ -1,0 +1,194 @@
+\documentclass[a4paper,oneside,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[T1]{fontenc}
+\linespread{1.185}
+
+%\usepackage{eulervm}
+\usepackage[landscape,left=.5cm,right=.5cm,top=2.1cm,bottom=.5cm]{geometry}
+
+\setlength{\columnseprule}{0.25pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{ACM ICPC Reference, page \bfseries\thepage}
+\fancyhead[LE,LO]{University of São Paulo}
+
+\usepackage{listings}
+%\usepackage{pxfonts}
+\usepackage[scaled=1.14]{couriers}
+
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+
+\newcommand{\SECTION}[2]{\section*{#1} \addcontentsline{toc}{subsection}{#1} #2 \begin{center}\rule{400pt}{0.25pt}\end{center}}
+\newcommand{\FINALSECTION}[1] {\section*{#1} \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\sourcefile}[1]{\lstinputlisting{#1}}
+%\newcommand{\Csourcefile}[1]{\begin{center}\textbf{#1.cpp}\end{center}\lstinputlisting[language=C, basicstyle=\ttfamily, keywordstyle=\bfseries, showstringspaces=false, morekeywords={ll}]{src/#1.cpp}}
+\newcommand{\Csourcefile}[1]{\lstinputlisting[language=C, basicstyle=\ttfamily, keywordstyle=\bfseries, showstringspaces=false, morekeywords={ll}]{#1.cpp}}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\then}{\Longrightarrow}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\brackets}[1]{\left[#1\right]}
+\newcommand{\braces}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\nequiv}{\not\equiv}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\norm}[1]{\abs{\abs{#1}}}
+\newcommand{\degree}{\ensuremath{^\circ}}
+\newcommand{\defun}[5] {
+    \begin{array}{rrcl}
+#1: & #2 & \longrightarrow & #3 \\
+    & #4 & \longmapsto & #5
+    \end{array}
+}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\stirfst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\stirsnd}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\bell}[1]{\mathcal B_{#1}}
+\newcommand{\seg}[1]{\overline{#1}}
+
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+\title{ACM ICPC Reference}
+\author{University of São Paulo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\scriptsize{}
+\maketitle
+\thispagestyle{fancy}
+
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Start of the contest}
+\SECTION{Template} {
+  \Csourcefile{../../templates/template}
+}
+
+\SECTION{Makefile} {
+  \sourcefile{../../templates/Makefile}
+}
+
+\SECTION{Emacs config} {
+  \sourcefile{../../lib/emacs.cfg}
+}
+
+\section{Graphs}
+
+\SECTION{Graph structures} {
+  \Csourcefile{../Graphs/Graph}
+  \Csourcefile{../Graphs/WeightedGraph}
+  \Csourcefile{../Graphs/FlowGraph}
+  \Csourcefile{../Graphs/CostFlowGraph}
+}    
+
+\SECTION{Eulerian Path} {
+  \Csourcefile{../../lib/eulerian_path}
+}
+  
+\SECTION{Bridge and articulation point} {
+  \Csourcefile{../Graphs/BridgeAp}
+}
+
+\SECTION{Biconnected componentes} {
+  \Csourcefile{../Graphs/BiconnectedComponents}
+}
+
+\SECTION{Topological Sort} {
+  \Csourcefile{../Graphs/TopSort}
+}
+
+\SECTION{Strongly Connected Components} {
+  \Csourcefile{../Graphs/Tarjan}
+}
+
+\SECTION{2-Sat} {
+  \Csourcefile{../Graphs/2Sat}
+}
+
+\SECTION{Maximum matching} {
+  \Csourcefile{../../lib/edmondsMatching}
+}
+
+\SECTION{Max flow} {
+  \Csourcefile{../Graphs/Dinic}
+  \Csourcefile{../Graphs/PushRelabel-FIFO-Gap}
+}
+
+\SECTION{Min cost max flow} {
+  \Csourcefile{../Graphs/MinCostMaxFlow-SSP}
+}
+
+\SECTION{Gomory-Hu tree} {
+  \Csourcefile{../Graphs/GomoryHu}
+}
+
+\SECTION{Global min cut} {
+  \Csourcefile{../Graphs/StoerWagner}
+}
+
+\SECTION{Heavy-Light decomposition} {
+  \Csourcefile{../../lib/heavy-light}
+  \Csourcefile{../Graphs/HeavyLightSimple}
+}
+
+\SECTION{Dominator tree} {
+  \Csourcefile{../Graphs/DominatorTree}
+}
+
+\section{Strings}
+\SECTION{Knuth-Morris-Pratt} {
+  \Csourcefile{../../lib/kmp}
+}
+
+\SECTION{Z algorithm} {
+  \Csourcefile{../../lib/z}
+}
+
+\SECTION{Aho-Corasick} {
+  \Csourcefile{../../lib/aho-corasick}
+}
+
+\SECTION{Hash} {
+  \Csourcefile{../Strings/Hash}
+}
+
+\section{Data Structures}
+\SECTION{Convex trick optimization} {
+  \Csourcefile{../../lib/dp_convex_constant}
+  \Csourcefile{../../lib/dp_convex}
+}
+
+\SECTION{Ordered set} {
+  \Csourcefile{../Data Structures/OrderedSet}
+}
+
+\SECTION{Static RMQ} {
+  \Csourcefile{../Data Structures/RMQStatic}
+}
+
+
+\end{document}
