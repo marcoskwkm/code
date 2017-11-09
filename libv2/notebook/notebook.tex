@@ -21,6 +21,7 @@
 
 \usepackage{sectsty}
 \sectionfont{\normalsize}
+\subsectionfont{\normalsize}
 
 \newcommand{\SECTION}[2]{\section*{#1} \addcontentsline{toc}{subsection}{#1} #2 \begin{center}\rule{400pt}{0.25pt}\end{center}}
 \newcommand{\FINALSECTION}[1] {\section*{#1} \addcontentsline{toc}{subsection}{#1}}
@@ -96,12 +97,13 @@
   \sourcefile{../../lib/emacs.cfg}
 }
 
+\newpage
 \section{Graphs}
-
 \SECTION{Graph structures} {
   \Csourcefile{../Graphs/Graph}
   \Csourcefile{../Graphs/WeightedGraph}
   \Csourcefile{../Graphs/FlowGraph}
+  \newpage
   \Csourcefile{../Graphs/CostFlowGraph}
 }    
 
@@ -142,16 +144,19 @@
   \Csourcefile{../Graphs/MinCostMaxFlow-SSP}
 }
 
+\newpage
 \SECTION{Gomory-Hu tree} {
   \Csourcefile{../Graphs/GomoryHu}
 }
 
+\newpage
 \SECTION{Global min cut} {
   \Csourcefile{../Graphs/StoerWagner}
 }
 
 \SECTION{Heavy-Light decomposition} {
   \Csourcefile{../../lib/heavy-light}
+  \subsection*{HLD with no data structure}
   \Csourcefile{../Graphs/HeavyLightSimple}
 }
 
@@ -159,6 +164,7 @@
   \Csourcefile{../Graphs/DominatorTree}
 }
 
+\newpage
 \section{Strings}
 \SECTION{Knuth-Morris-Pratt} {
   \Csourcefile{../../lib/kmp}
@@ -182,12 +188,66 @@
   \Csourcefile{../../lib/dp_convex}
 }
 
+\newpage
 \SECTION{Ordered set} {
-  \Csourcefile{../Data Structures/OrderedSet}
+  \Csourcefile{../DataStructures/OrderedSet}
 }
 
 \SECTION{Static RMQ} {
-  \Csourcefile{../Data Structures/RMQStatic}
+  \Csourcefile{../DataStructures/RMQStatic}
+}
+
+\SECTION{Time} {
+  \Csourcefile{../../lib/time}
+}
+
+\SECTION{Treap} {
+  \Csourcefile{../../lib/treap}
+}
+
+\section{Math}
+\SECTION{Combinatorics} {
+  \Csourcefile{../../lib/combo}
+}
+
+\newpage
+\SECTION{Gaussian elimination} {
+  \Csourcefile{../../lib/gaussian}
+  \newpage
+  \subsection*{Gaussian elimination mod P}
+  \Csourcefile{../../lib/gaussModP}
+}
+
+\newpage
+\SECTION{Miller-Rabin primality test} {
+  \Csourcefile{../../lib/miller-rabin}
+}
+
+\newpage
+\SECTION{Simpson integration rule} {
+  \Csourcefile{../../lib/numerical}
+}
+
+\SECTION{Fast Fourier Transform} {
+  \Csourcefile{../Math/FFT}
+}
+
+\SECTION{Number Theoretic Transform} {
+  \Csourcefile{../Math/NTT}
+}
+
+\newpage
+\SECTION{Fast Walsh-Hadamard Transform} {
+  \Csourcefile{../Math/FWHT}
+}
+
+\section{Geometry (lolwut)}
+\SECTION{2D Geometry} {
+  \Csourcefile{../../lib/geometry}
+}
+
+\SECTION{3D Geometry} {
+  \Csourcefile{../../lib/geometry_3d}
 }
 
 

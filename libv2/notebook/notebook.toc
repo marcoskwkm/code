@@ -1,0 +1,42 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Start of the contest}{2}
+\contentsline {subsection}{Template}{2}
+\contentsline {subsection}{Makefile}{2}
+\contentsline {subsection}{Emacs config}{2}
+\contentsline {section}{\numberline {2}Graphs}{2}
+\contentsline {subsection}{Graph structures}{2}
+\contentsline {subsection}{Eulerian Path}{3}
+\contentsline {subsection}{Bridge and articulation point}{3}
+\contentsline {subsection}{Biconnected componentes}{4}
+\contentsline {subsection}{Topological Sort}{4}
+\contentsline {subsection}{Strongly Connected Components}{4}
+\contentsline {subsection}{2-Sat}{5}
+\contentsline {subsection}{Maximum matching}{5}
+\contentsline {subsection}{Max flow}{6}
+\contentsline {subsection}{Min cost max flow}{8}
+\contentsline {subsection}{Gomory-Hu tree}{9}
+\contentsline {subsection}{Global min cut}{9}
+\contentsline {subsection}{Heavy-Light decomposition}{10}
+\contentsline {subsection}{Dominator tree}{11}
+\contentsline {section}{\numberline {3}Strings}{12}
+\contentsline {subsection}{Knuth-Morris-Pratt}{12}
+\contentsline {subsection}{Z algorithm}{12}
+\contentsline {subsection}{Aho-Corasick}{12}
+\contentsline {subsection}{Hash}{13}
+\contentsline {section}{\numberline {4}Data Structures}{14}
+\contentsline {subsection}{Convex trick optimization}{14}
+\contentsline {subsection}{Ordered set}{15}
+\contentsline {subsection}{Static RMQ}{15}
+\contentsline {subsection}{Time}{15}
+\contentsline {subsection}{Treap}{16}
+\contentsline {section}{\numberline {5}Math}{17}
+\contentsline {subsection}{Combinatorics}{17}
+\contentsline {subsection}{Gaussian elimination}{18}
+\contentsline {subsection}{Miller-Rabin primality test}{19}
+\contentsline {subsection}{Simpson integration rule}{19}
+\contentsline {subsection}{Fast Fourier Transform}{19}
+\contentsline {subsection}{Number Theoretic Transform}{20}
+\contentsline {subsection}{Fast Walsh-Hadamard Transform}{20}
+\contentsline {section}{\numberline {6}Geometry (lolwut)}{20}
+\contentsline {subsection}{2D Geometry}{20}
+\contentsline {subsection}{3D Geometry}{22}
