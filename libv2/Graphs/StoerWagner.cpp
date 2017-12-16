@@ -26,7 +26,9 @@ template<class FTYPE> struct StoerWagnerMinCut {
         FTYPE ret = numeric_limits<FTYPE>::max();
         while (g.V > 1) {
             vector<bool> seen(g.V);
-            set<pair<FTYPE, int>, greater<pair<FTYPE, int>>> pq({{0, 0}});
+            set<pair<FTYPE, int>, greater<pair<FTYPE, int>>> pq;
+            for (int v = 0; v < g.V; v++)
+                pq.insert(make_pair(0, 0));
             vector<FTYPE> c(g.V);
             int s = -1, t = -1;
             while (!pq.empty()) {

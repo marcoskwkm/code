@@ -5,7 +5,7 @@
 */
 template<class FTYPE, template<class> class MF>
 WeightedGraph<FTYPE> GomoryHuTree(const FlowGraph<FTYPE> &g) {
-    vector<int> parent(g.V, 0), depth(g.V, 0);
+    vector<int> parent(g.V, 0);
     vector<FTYPE> cap(g.V);
     for (int s = 1; s < g.V; s++) {
         int t = parent[s];
