@@ -32,15 +32,22 @@ template<class C_TYPE> struct ConvexHullOpt {
     bool add_line(C_TYPE a, C_TYPE b) {
         if (!deq.empty() && deq.back().b == b && deq.back().a <= a) return 0;
         Line newline(a, b);
-        int i = deq.size() - 1;
-        while (i >= 0 && cross(newline, deq[i]) < deq[i].end_l) {
-            i = deq[i].jmp[0];
+        int top = deq.size() - 1;
+        if (top != -1) {
+            for (int i = LOG - 1; i >= 0; i--) {
+                int aux = deq[top].jmp[i];
+                if (aux == -1) continue;
+                if (deq[aux].end_l > cross(newline, deq[aux]))
+                    top = aux;
+            }
+            if (deq[top].end_l > cross(newline, deq[top]))
+                top = deq[top].jmp[0];
         }
-        if (i >= 0) newline.end_l = cross(newline, deq[i]);
-        newline.jmp[0] = i;
-        for (int j = 1; j < LOG; j++) {
-            int tmp = newline.jmp[j - 1];            
-            newline.jmp[j] = (tmp == -1 ? -1 : deq[tmp].jmp[j - 1]);
+        if (top >= 0) newline.end_l = cross(newline, deq[top]);
+        newline.jmp[0] = top;
+        for (int i = 1; i < LOG; i++) {
+            int aux = newline.jmp[i - 1];            
+            newline.jmp[i] = (aux == -1 ? -1 : deq[aux].jmp[i - 1]);
         }            
         deq.push_back(newline);
         return 1;
@@ -65,14 +72,6 @@ lint ans[MAXN];
 ConvexHullOpt<lint> convex;
 
 void solve(int v, int prv, lint d) {
-    // if (v != 1) {
-    //     printf("v = %d:\n", v);
-    //     int cur = convex.deq.size() - 1;
-    //     while (cur != -1) {
-    //         printf("%lld %lld\n", convex.deq[cur].a, convex.deq[cur].b);
-    //         cur = convex.deq[cur].jmp[0];
-    //     }
-    // }
     if (v != 1) ans[v] = convex.get(vel[v]) + d*vel[v] + s[v];
     else ans[v] = 0;
     bool inserted = convex.add_line(ans[v], -d);
@@ -83,7 +82,6 @@ void solve(int v, int prv, lint d) {
         solve(nxt, v, d + dst);
     }
     if (inserted) convex.deq.pop_back();
-    // else printf("rejected %d\n", v);
 }        
 
 int main() {
