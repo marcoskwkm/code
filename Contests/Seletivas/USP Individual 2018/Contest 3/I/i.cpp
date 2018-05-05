@@ -10,10 +10,10 @@ typedef tuple<int, int, int> tiii;
 
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
-const int DX = 2000;
+const int DX = 0;
 
-long double calc_x(int x1, int y1, int x2, int y2, int y) {
-    return ((long double)(y - y1) / (y2 - y1)) * (x2 - x1) + x1;
+double calc_x(int x1, int y1, int x2, int y2, int y) {
+    return ((double)(y - y1) / (y2 - y1)) * (x2 - x1) + x1;
 }
 
 int main() {
@@ -34,7 +34,7 @@ int main() {
             proj.push_back(pii(x, y));
         }
 
-        long double ans = 0;
+        double ans = 0;
         for (int i = 0; i < n; i++) {
             int mx1, my1, mx2, my2;
             tie(mx1, my1) = monster[i];
@@ -49,16 +49,16 @@ int main() {
                 int pyh = max(py1, py2), pyl = min(py1, py2);
                 int yh = min(myh, pyh), yl = max(myl, pyl);
                 if (yh <= yl) continue;
-                long double mxh = calc_x(mx1, my1, mx2, my2, yh);
-                long double mxl = calc_x(mx1, my1, mx2, my2, yl);
-                long double pxh = calc_x(px1, py1, px2, py2, yh);
-                long double pxl = calc_x(px1, py1, px2, py2, yl);
-                long double dxh = mxh - pxh, dxl = mxl - pxl;
-                long double add = (long double)(yh - yl) / 6 * (dxh - dxl) * (dxh - dxl);
-                long double area = 1./2 * fabs(dxh - dxl) * (yh - yl);
+                double mxh = calc_x(mx1, my1, mx2, my2, yh);
+                double mxl = calc_x(mx1, my1, mx2, my2, yl);
+                double pxh = calc_x(px1, py1, px2, py2, yh);
+                double pxl = calc_x(px1, py1, px2, py2, yl);
+                double dxh = mxh - pxh, dxl = mxl - pxl;
+                double add = (double)(yh - yl) / 6 * (dxh - dxl) * (dxh - dxl);
+                double area = 1./2 * fabs(dxh - dxl) * (yh - yl);
                 // debug("preadd = %.3f, area = %.3f\n", add, area);
                 // debug("dxh = %.3f, dxl = %.3f\n", dxh, dxl);
-                long double rem = DX - max(dxh, dxl);
+                double rem = DX - max(dxh, dxl);
                 add += 1./2 * rem * rem * (yh - yl) + area * rem;
                 if (py2 < py1) add *= -1;
                 if (my2 > my1) add *= -1;
@@ -66,7 +66,7 @@ int main() {
                 ans += add;
             }
         }
-        printf("Case %d: %.6Lf\n", t, ans);
+        printf("Case %d: %.6f\n", t, ans);
     }                
     return 0;
 }
