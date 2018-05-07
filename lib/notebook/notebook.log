@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.6.24)  10 NOV 2016 00:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.23)  8 NOV 2017 12:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/home/marcos/code/lib/notebook/notebook.tex
-(/home/marcos/code/lib/notebook/notebook.tex
+**/home/marcosk/code/lib/notebook/notebook.tex
+(/home/marcosk/code/lib/notebook/notebook.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -405,8 +405,7 @@ less on input line 15.
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 16.
 
-(/usr/share/texmf/tex/latex/fpc-3.0.0/listings.sty
-Package: listings 2002/04/01 1.0 (Carsten Heinz)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count91
 \lst@gtempboxa=\box26
 \lst@token=\toks18
@@ -418,21 +417,19 @@ Package: listings 2002/04/01 1.0 (Carsten Heinz)
 \lst@width=\dimen114
 \lst@newlines=\count95
 \lst@lineno=\count96
-\c@lstlisting=\count97
 \lst@maxwidth=\dimen115
 
-(/usr/share/texmf/tex/latex/fpc-3.0.0/lstpatch.sty
-File: lstpatch.sty 2002/10/13 1.0i (Carsten Heinz)
-)
-(/usr/share/texmf/tex/latex/fpc-3.0.0/lstmisc.sty
-File: lstmisc.sty 2002/04/01 1.0 (Carsten Heinz)
-\c@lstnumber=\count98
-\lst@skipnumbers=\count99
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count97
+\lst@skipnumbers=\count98
 \lst@framebox=\box27
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
 (/usr/share/texlive/texmf-dist/tex/latex/courier-scaled/couriers.sty
 Package: couriers 2004/07/10 Scaled Courier (HS) 
 )
@@ -460,13 +457,13 @@ Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count100
+\inf@bad=\count99
 LaTeX Info: Redefining \frac on input line 199.
-\uproot@=\count101
-\leftroot@=\count102
+\uproot@=\count100
+\leftroot@=\count101
 LaTeX Info: Redefining \overline on input line 297.
-\classnum@=\count103
-\DOTSCASE@=\count104
+\classnum@=\count102
+\DOTSCASE@=\count103
 LaTeX Info: Redefining \ldots on input line 394.
 LaTeX Info: Redefining \dots on input line 397.
 LaTeX Info: Redefining \cdots on input line 518.
@@ -475,15 +472,15 @@ LaTeX Info: Redefining \cdots on input line 518.
 \big@size=\dimen118
 LaTeX Font Info:    Redeclaring font encoding OML on input line 630.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 631.
-\macc@depth=\count105
-\c@MaxMatrixCols=\count106
+\macc@depth=\count104
+\c@MaxMatrixCols=\count105
 \dotsspace@=\muskip10
-\c@parentequation=\count107
-\dspbrk@lvl=\count108
+\c@parentequation=\count106
+\dspbrk@lvl=\count107
 \tag@help=\toks20
-\row@=\count109
-\column@=\count110
-\maxfields@=\count111
+\row@=\count108
+\column@=\count109
+\maxfields@=\count110
 \andhelp@=\toks21
 \eqnshift@=\dimen119
 \alignsep@=\dimen120
@@ -569,6 +566,7 @@ LaTeX Font Info:    ... okay on input line 73.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+\c@lstlisting=\count111
 LaTeX Font Info:    Try loading font information for U+msa on input line 75.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -582,11 +580,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout3 = `notebook.toc'.
 
 
-(/usr/share/texmf/tex/latex/fpc-3.0.0/lstlang1.sty
-File: lstlang1 2002/07/31 v1.0d listings language file
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(/usr/share/texmf/tex/latex/fpc-3.0.0/lstmisc.sty
-File: lstmisc.sty 2002/04/01 1.0 (Carsten Heinz)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 LaTeX Font Info:    Try loading font information for T1+pcrs on input line 89.
 
@@ -620,20 +618,17 @@ LaTeX Font Info:    Font shape `T1/pcrs/m/sl' will be
 (Font)              scaled to size 7.98pt on input line 16.
 )
 (../dinic.cpp
-Underfull \vbox (badness 10000) detected at line 67
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[2]) (../edmondsMatching.cpp
-Underfull \vbox (badness 10000) detected at line 86
- []
+ [2])
+(../edmondsMatching.cpp
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[3]) (../eulerian_path.cpp) (../gomory_hu.cpp)
-Underfull \vbox (badness 4967) has occurred while \output is active []
-
- [4]
-(../mincostmaxflow.cpp
+ [3])
+(../eulerian_path.cpp) (../gomory_hu.cpp) [4] (../mincostmaxflow.cpp
 Overfull \hbox (85.08304pt too wide) in paragraph at lines 72--73
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][] 
  []
 
 )
@@ -641,84 +636,92 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5]
 (../tarjan.cpp) (../aho-corasick.cpp
-Underfull \vbox (badness 10000) detected at line 67
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[6]) (../hash.cpp) (../kmp.cpp [7]) (../z.cpp)
+ [6])
+(../hash.cpp) (../kmp.cpp [7]) (../z.cpp)
 Underfull \vbox (badness 5064) has occurred while \output is active []
 
 
 (../dp_convex_constant.cpp) [8] (../dp_convex.cpp) (../heavy-light.cpp [9]
-Underfull \vbox (badness 10000) detected at line 77
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-) (../rmq_constant.cpp
+)
+(../rmq_constant.cpp
 Overfull \hbox (3.68636pt too wide) in paragraph at lines 11--12
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 ) (../time.cpp
 Overfull \hbox (22.83852pt too wide) in paragraph at lines 14--15
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][] 
  []
 
 [10]) (../treap.cpp
-Underfull \vbox (badness 10000) detected at line 99
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[11]
+ [11]
 Overfull \hbox (8.4744pt too wide) in paragraph at lines 111--112
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 ) (../combo.cpp) (../fft.cpp [12]) (../gaussian.cpp) (../miller-rabin.cpp
 [13]) (../numerical.cpp) (../geometry.cpp
 Overfull \hbox (13.26244pt too wide) in paragraph at lines 30--31
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][] 
  []
 
 
 Overfull \hbox (13.26244pt too wide) in paragraph at lines 31--32
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][] 
  []
 
 
 Overfull \hbox (3.68636pt too wide) in paragraph at lines 68--69
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+
  []
 
 
-Underfull \vbox (badness 10000) detected at line 78
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[14]) (../geometry_3d.cpp
+ [14])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+(../geometry_3d.cpp
 Overfull \hbox (13.26244pt too wide) in paragraph at lines 51--52
-[][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-) [15] (./notebook.aux) ) 
+[15]) [16
+
+] (./notebook.aux) ) 
 Here is how much of TeX's memory you used:
- 5074 strings out of 493029
- 61152 string characters out of 6136234
- 180956 words of memory out of 5000000
- 8455 multiletter control sequences out of 15000+600000
+ 5606 strings out of 493029
+ 66575 string characters out of 6136234
+ 218771 words of memory out of 5000000
+ 8990 multiletter control sequences out of 15000+600000
  17718 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,10n,64p,256b,692s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r
-.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf/font
-s/type1/public/cm-super/sfbx0700.pfb></usr/share/texmf/fonts/type1/public/cm-su
-per/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0700.pfb></u
-sr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts
-/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-sup
-er/sfrm1728.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb>
-Output written on notebook.pdf (15 pages, 197242 bytes).
+ 34i,11n,54p,257b,1693s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}
+{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf/fonts/typ
+e1/public/cm-super/sfbx0700.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
+fbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0700.pfb></usr/sh
+are/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type
+1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
+rm1728.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb>
+Output written on notebook.pdf (16 pages, 198310 bytes).
 PDF statistics:
- 95 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
+ 98 PDF objects out of 1000 (max. 8388607)
+ 69 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
