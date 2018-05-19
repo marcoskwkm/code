@@ -15,8 +15,6 @@ const int MAXN = 30;
 
 char grid[MAXN][MAXN];
 bool seen[MAXN][MAXN];
-int cmpsz[MAXN][MAXN][3][3];
-int cmpszd[MAXN][MAXN][4];
 int dr[] = {1, 0, -1, 0};
 int dc[] = {0, 1, 0, -1};
 int n, m;
