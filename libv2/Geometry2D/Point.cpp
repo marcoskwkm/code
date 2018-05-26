@@ -2,12 +2,12 @@ template<class T> struct Point {
     T x, y;
     Point(T _x = 0, T _y = 0) : x(_x), y(_y) {}
     T norm2() { return x * x + y * y; }
-    T norm() { return sqrt(norm2()); }
+    double norm() { return sqrt(norm2()); }
     Point<T> rotate(T alpha) {
         return Point<T>(x * cos(alpha) - y * sin(alpha),
                         x * sin(alpha) + y * cos(alpha));
     }
-    T arg() { return atan2(y, x); } // [-PI, PI]
+    double arg() { return atan2(y, x); } // [-PI, PI]
 };
 template<class T> using Vector = Point<T>;
 template<class T> using Poly = vector<Point<T>>;
