@@ -45,7 +45,7 @@ public:
         return num * that.den < that.num * den;
     }
 
-    bool operator<= (const Fraction<t> &that) const {
+    bool operator<= (const Fraction<T> &that) const {
         return num * that.den <= that.num * den;
     }
 
