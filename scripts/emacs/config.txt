@@ -26,6 +26,7 @@
 (set-face-background 'hl-line "#003399")
 (global-unset-key "\C-z")
 (global-unset-key "\C-x\C-z")
+(tool-bar-mode -1)
 (c-set-offset 'case-label '+) ; indents switch-case block
 
 ;; Hooks C-c c to compile
@@ -69,3 +70,4 @@
 
 ;; Latex preview pane
 (load-file "~/emacs/latex-preview-pane/latex-preview-pane.el")
+(setq doc-view-resolution 300)
