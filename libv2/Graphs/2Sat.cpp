@@ -1,4 +1,8 @@
-/* Finds one solution for a 2-sat instance or informs there isn't one */
+/* 
+   Finds one solution for a 2-sat instance or informs there isn't one.
+   Variable x and its negation should have indices 2 * x and 2 * x + 1.
+*/
+
 struct SatSolver {
     bool solvable;
     vector<int> value; // 0 - false, 1 - true
