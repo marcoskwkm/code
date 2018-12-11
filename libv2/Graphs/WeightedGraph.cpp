@@ -1,3 +1,4 @@
+// Directed weighted graph
 template<class WTYPE> struct WeightedGraph {
     int V;
     vector<vector<pair<int, WTYPE>>> adj;
