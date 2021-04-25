@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define debug(args...) fprintf(stderr,args)
+#define debug(args...) fprintf(stderr, args)
+#define readIntArray(v, n) for_each(v.begin(), v.begin() + n, [](int &x) { scanf("%d", &x); })
+#define readLintArray(v, n) for_each(v.begin(), v.begin() + n, [](int &x) { scanf("%lld", &x); })
 
 typedef long long lint;
 typedef pair<int, int> pii;
@@ -12,6 +14,6 @@ const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 
 int main() {
-    
+    ;
     return 0;
 }
