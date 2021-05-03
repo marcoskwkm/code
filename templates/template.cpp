@@ -12,7 +12,13 @@ typedef tuple<int, int, int> tiii;
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 
-template <class T, class C = vector<T>> inline void printArray(C v, int n = -1) {
+template<class T = int> T read() {
+    T x;
+    cin >> x;
+    return x;
+}
+
+template<class T, class C = vector<T>> inline void printArray(C v, int n = -1) {
     int cnt = 0;
     for (auto it = v.begin(); it != v.end() && cnt != n; it++, cnt++) {
         cout << *it << (next(it) == v.end() || cnt + 1 == n ? '\n' : ' ');
