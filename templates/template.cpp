@@ -12,15 +12,6 @@ typedef tuple<int, int, int> tiii;
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
 
-template<class T> vector<T> make_vector(size_t size, T initialValue) {
-    return vector<T>(size, initialValue);
-}
-
-template<class T, class... Args> auto make_vector(size_t head, Args &&...rem) {
-    auto inner = make_vector<T>(rem...);
-    return vector<decltype(inner)>(head, inner);
-}
-
 template<class Fun> class y_combinator_result {
     Fun fun_;
 
@@ -36,10 +27,13 @@ template<class Fun> decltype(auto) y_combinator(Fun &&fun) {
     return y_combinator_result<decay_t<Fun>>(forward<Fun>(fun));
 }
 
-template<class T = int> inline T read() {
-    T x;
-    cin >> x;
-    return x;
+template<class T> vector<T> make_vector(size_t size, T initialValue) {
+    return vector<T>(size, initialValue);
+}
+
+template<class T, class... Args> auto make_vector(size_t head, Args &&...rem) {
+    auto inner = make_vector<T>(rem...);
+    return vector<decltype(inner)>(head, inner);
 }
 
 template<class T, class C = vector<T>> inline void print_array(C v, int n = -1) {
@@ -48,6 +42,12 @@ template<class T, class C = vector<T>> inline void print_array(C v, int n = -1) 
         cout << *it << (next(it) == v.end() || cnt + 1 == n ? "" : " ");
     }
     cout << '\n';
+}
+
+template<class T = int> inline T read() {
+    T x;
+    cin >> x;
+    return x;
 }
 
 int main() {
