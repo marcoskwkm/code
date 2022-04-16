@@ -2,7 +2,7 @@
 using namespace std;
 
 #define debug(args...) fprintf(stderr, args)
-#define readArray(v, n) for_each(v.begin(), v.begin() + n, [](auto &x) { cin >> x; })
+#define read_array(v, n) for_each(v.begin(), v.begin() + n, [](auto &x) { cin >> x; })
 
 typedef long long lint;
 typedef pair<int, int> pii;
@@ -11,6 +11,15 @@ typedef tuple<int, int, int> tiii;
 
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
+
+template<class T> vector<T> make_vector(size_t size, T initialValue) {
+    return vector<T>(size, initialValue);
+}
+
+template<class T, class... Args> auto make_vector(size_t head, Args &&...rem) {
+    auto inner = make_vector<T>(rem...);
+    return vector<decltype(inner)>(head, inner);
+}
 
 template<class Fun> class y_combinator_result {
     Fun fun_;
@@ -33,7 +42,7 @@ template<class T = int> inline T read() {
     return x;
 }
 
-template<class T, class C = vector<T>> inline void printArray(C v, int n = -1) {
+template<class T, class C = vector<T>> inline void print_array(C v, int n = -1) {
     int cnt = 0;
     for (auto it = v.begin(); it != v.end() && cnt != n; it++, cnt++) {
         cout << *it << (next(it) == v.end() || cnt + 1 == n ? "" : " ");
