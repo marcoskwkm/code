@@ -51,6 +51,82 @@ template<class T = int> inline T read() {
     return x;
 }
 
+// Range update range query segtree
+template<class T> struct SegmentTree {
+    struct Node {
+        T val, cnt, lazy;
+
+        Node(lint _val = 0, lint _cnt = 1) : val(_val), cnt(_cnt), lazy(0) {}
+
+        // Merge two nodes
+        Node operator+(const Node &that) {
+            if (val > that.val) {
+                return *this;
+            } else if (that.val > val) {
+                return that;
+            }
+
+            return Node(val, cnt + that.cnt);
+        }
+    };
+    // Neutral element
+    const Node ID = Node(0, 0);
+
+    vector<Node> tree;
+    int n;
+
+    SegmentTree() {}
+    SegmentTree(const vector<T> &v) { init(v); }
+
+    void init(const vector<T> &v) {
+        n = v.size();
+        tree.resize(4 * n);
+        build(0, 0, n - 1, v);
+    }
+
+    Node build(int i, int l, int r, const vector<T> &v) {
+        if (l == r)
+            return tree[i] = Node(v[l]);
+        int L = 2 * i + 1, R = 2 * i + 2, mid = (l + r) / 2;
+        return tree[i] = build(L, l, mid, v) + build(R, mid + 1, r, v);
+    }
+
+    // Apply lazy updates to a node
+    void refresh(int i, int l, int r) {
+        tree[i].val += tree[i].lazy;
+        if (l < r) {
+            tree[2 * i + 1].lazy += tree[i].lazy;
+            tree[2 * i + 2].lazy += tree[i].lazy;
+        }
+        tree[i].lazy = 0;
+    }
+
+    Node update(int i, int l, int r, int ql, int qr, T val) {
+        refresh(i, l, r);
+        if (r < ql || qr < l)
+            return tree[i];
+        if (ql <= l && r <= qr) {
+            tree[i].lazy += val;
+            refresh(i, l, r);
+            return tree[i];
+        }
+        int L = 2 * i + 1, R = 2 * i + 2, mid = (l + r) / 2;
+        return tree[i] = update(L, l, mid, ql, qr, val) + update(R, mid + 1, r, ql, qr, val);
+    }
+    void update(int ql, int qr, T val) { update(0, 0, n - 1, ql, qr, val); }
+
+    Node query(int i, int l, int r, int ql, int qr) {
+        refresh(i, l, r);
+        if (r < ql || qr < l)
+            return ID;
+        if (ql <= l && r <= qr)
+            return tree[i];
+        int L = 2 * i + 1, R = 2 * i + 2, mid = (l + r) / 2;
+        return query(L, l, mid, ql, qr) + query(R, mid + 1, r, ql, qr);
+    }
+    Node query(int ql, int qr) { return query(0, 0, n - 1, ql, qr); }
+};
+
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
@@ -67,41 +143,74 @@ int main() {
             cin >> A[i] >> B[i];
         }
 
-        vector<int> color(N);
+        vector<int> color(2 * N);
         for (int i = 0; i < N; i++) {
-            color[i] = read() - 1;
+            color[i] = color[N + i] = read() - 1;
         }
 
-        int ans = 0;
+        vector<vector<int>> appearances(C);
 
-        auto nxt = [&](int i) { return i + 1 == N ? 0 : i + 1; };
+        for (int i = 0; i < 2 * N; i++) {
+            appearances[color[i]].push_back(i);
+        }
 
-        for (int l = 0; l < N; l++) {
-            vector<int> cnt(C);
-            int not_ok = 0;
+        SegmentTree<lint> tree(vector<lint>(2 * N));
+        vector<int> idx(C, 0);
 
-            auto check = [&](int c) { return cnt[c] == 0 || (A[c] <= cnt[c] && cnt[c] <= B[c]); };
+        auto get_intervals = [&](int c, int i, int pos) {
+            vector<pii> intervals;
 
-            for (int r = l; nxt(r) != l; r = nxt(r)) {
-                bool before = check(color[r]);
-                cnt[color[r]]++;
-                bool after = check(color[r]);
+            if (i == (int)appearances[c].size()) {
+                intervals.push_back({0, 2 * N - 1});
+                return intervals;
+            }
 
-                if (before != after) {
-                    if (after) {
-                        not_ok--;
-                    } else {
-                        not_ok++;
-                    }
+            if (appearances[c][i] > pos) {
+                intervals.push_back({0, appearances[c][i] - 1});
+            }
+
+            if (B[c] > 0) {
+                if (A[c] + i >= (int)appearances[c].size()) {
+                    return intervals;
                 }
+                int l = appearances[c][max(1, A[c]) - 1 + i];
+                int r = B[c] + i >= (int)appearances[c].size() ? 2 * N : appearances[c][B[c] + i];
+                intervals.push_back({l, r - 1});
+            }
 
-                if (not_ok == 0 && r != l) {
-                    ans += 1;
-                }
+            return intervals;
+        };
+
+        for (int c = 0; c < C; c++) {
+            auto intervals = get_intervals(c, 0, 0);
+            for (auto &[l, r]: intervals) {
+                tree.update(l, r, 1);
             }
         }
 
-        printf("%d\n", ans);
+        lint ans = 0;
+
+        for (int i = 0; i < N; i++) {
+            auto q = tree.query(i + 1, i + N - 2);
+
+            if (q.val == C) {
+                ans += q.cnt;
+            }
+
+            auto pre_intervals = get_intervals(color[i], idx[color[i]], i);
+            for (auto &[l, r]: pre_intervals) {
+                tree.update(l, r, -1);
+            }
+
+            idx[color[i]]++;
+
+            auto pos_intervals = get_intervals(color[i], idx[color[i]], i + 1);
+            for (auto &[l, r]: pos_intervals) {
+                tree.update(l, r, 1);
+            }
+        }
+
+        printf("%lld\n", ans);
     }
 
     return 0;
