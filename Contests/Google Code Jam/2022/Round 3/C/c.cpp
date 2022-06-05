@@ -63,19 +63,16 @@ int main() {
         cin >> N;
 
         vector<vector<int>> adj(N);
-        set<pii> cur_edges;
-        set<pii> new_edges;
+        vector<pii> new_edges;
 
         for (int i = 0; i < N; i++) {
             adj[i].push_back(read() - 1);
-            cur_edges.insert({i, adj[i].back()});
-            new_edges.insert({adj[i].back(), i});
+            new_edges.push_back({adj[i].back(), i});
         }
 
         for (int i = 0; i < N; i++) {
             adj[i].push_back(read() - 1);
-            cur_edges.insert({i, adj[i].back()});
-            new_edges.insert({adj[i].back(), i});
+            new_edges.push_back({adj[i].back(), i});
         }
 
         bool ok = 1;
@@ -89,13 +86,8 @@ int main() {
                         ok = 0;
                     }
 
-                    if (cur_edges.find({v, w}) == cur_edges.end()) {
-                        new_edges.insert({v, w});
-                    }
-
-                    if (cur_edges.find({w, v}) == cur_edges.end()) {
-                        new_edges.insert({w, v});
-                    }
+                    new_edges.push_back({v, w});
+                    new_edges.push_back({w, v});
                 }
             }
         }
@@ -107,6 +99,11 @@ int main() {
 
         for (auto [u, v]: new_edges) {
             adj[u].push_back(v);
+        }
+
+        for (int i = 0; i < N; i++) {
+            sort(adj[i].begin(), adj[i].end());
+            adj[i].erase(unique(adj[i].begin(), adj[i].end()), adj[i].end());
         }
 
         vector<int> satur(N, 0);
@@ -136,12 +133,14 @@ int main() {
                 }
             }
 
-            // assert(color[v] != -1);
+            assert(color[v] != -1);
 
             for (int nxt: adj[v]) {
-                used[nxt][color[v]] = 1;
+                if (!used[nxt][color[v]]) {
+                    used[nxt][color[v]] = 1;
+                    satur[nxt]++;
+                }
                 s.erase({satur[nxt], uncolor_deg[nxt], nxt});
-                satur[nxt]++;
                 uncolor_deg[nxt]--;
                 s.insert({satur[nxt], uncolor_deg[nxt], nxt});
             }
