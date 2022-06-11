@@ -16,7 +16,7 @@ const string IMPOSSIBLE = "IMPOSSIBLE";
 template<class Fun> class y_combinator_result {
     Fun fun_;
 
-public:
+  public:
     template<class T> explicit y_combinator_result(T &&fun) : fun_(forward<T>(fun)) {}
 
     template<class... Args> decltype(auto) operator()(Args &&...args) {
@@ -51,32 +51,47 @@ template<class T = int> inline T read() {
     return x;
 }
 
-template<class FTYPE> struct FlowGraph {
-    struct Edge {
-        int v;
-        FTYPE cap;
-        Edge(int _v, FTYPE _cap) : v(_v), cap(_cap) {}
-    };
-
+template<class EType> struct Graph {
     int V;
-    vector<Edge> edges;
-    vector<vector<int>> adj;
+    vector<vector<EType *>> adj;
 
-    FlowGraph(int _V) : V(_V) { adj.resize(V); }
+    Graph(int _V) : V(_V) { adj.resize(V); }
+};
 
-    void add_edge(int u, int v, FTYPE cap) {
-        adj[u].push_back(edges.size());
-        edges.push_back(Edge(v, cap));
-        adj[v].push_back(edges.size());
-        edges.push_back(Edge(u, 0));
+struct FlowEdge {
+    using FType = int;
+    static const int MAX_EDGES = (int)1e7;
+    static int edge_cnt;
+    static array<FlowEdge, MAX_EDGES> edges;
+
+    int v;
+    FType cap;
+    FlowEdge *rev;
+
+    FlowEdge() {}
+    FlowEdge(int _v, FType _cap) : v(_v), cap(_cap), rev(NULL) {}
+
+    static void add(Graph<FlowEdge> &g, int u, int v, FType cap) {
+        edges[edge_cnt++] = FlowEdge(v, cap);
+        edges[edge_cnt++] = FlowEdge(u, 0);
+        auto uv = &edges[edge_cnt - 2];
+        auto vu = &edges[edge_cnt - 1];
+        uv->rev = vu;
+        vu->rev = uv;
+        g.adj[u].push_back(uv);
+        g.adj[v].push_back(vu);
     }
 };
 
-template<class FTYPE> struct Dinic {
-    vector<int> ptr, dist;
-    FlowGraph<FTYPE> &g;
+int FlowEdge::edge_cnt = 0;
+array<FlowEdge, FlowEdge::MAX_EDGES> FlowEdge::edges;
 
-    Dinic(FlowGraph<FTYPE> &_g) : g(_g) {
+template<class EType> struct Dinic {
+    using FType = typename EType::FType;
+    vector<int> ptr, dist;
+    Graph<EType> &g;
+
+    Dinic(Graph<EType> &_g) : g(_g) {
         ptr.resize(g.V);
         dist.resize(g.V);
     }
@@ -90,28 +105,27 @@ template<class FTYPE> struct Dinic {
             if (dist[v] == dist[t])
                 break;
             q.pop();
-            for (int i: g.adj[v]) {
-                int nxt = g.edges[i].v;
-                if (dist[nxt] == -1 && g.edges[i].cap) {
-                    dist[nxt] = dist[v] + 1;
-                    q.push(nxt);
+            for (const auto edge: g.adj[v]) {
+                if (dist[edge->v] == -1 && edge->cap) {
+                    dist[edge->v] = dist[v] + 1;
+                    q.push(edge->v);
                 }
             }
         }
         return dist[t] != -1;
     }
 
-    FTYPE dfs(int v, int t, FTYPE flow) {
-        if (v == t)
+    FType dfs(int v, int t, FType flow) {
+        if (v == t) {
             return flow;
+        }
         for (int &p = ptr[v]; p < (int)g.adj[v].size(); p++) {
-            int i = g.adj[v][p];
-            int nxt = g.edges[i].v;
-            if (dist[nxt] == dist[v] + 1 && g.edges[i].cap) {
-                FTYPE got = dfs(nxt, t, min(flow, g.edges[i].cap));
+            auto edge = g.adj[v][p];
+            if (dist[edge->v] == dist[v] + 1 && edge->cap) {
+                FType got = dfs(edge->v, t, min(flow, edge->cap));
                 if (got) {
-                    g.edges[i].cap -= got;
-                    g.edges[i ^ 1].cap += got;
+                    edge->cap -= got;
+                    edge->rev->cap += got;
                     return got;
                 }
             }
@@ -119,11 +133,11 @@ template<class FTYPE> struct Dinic {
         return 0;
     }
 
-    FTYPE max_flow(int s, int t) {
-        FTYPE ret = 0;
+    FType max_flow(int s, int t) {
+        FType ret = 0;
         while (bfs(s, t)) {
             fill(ptr.begin(), ptr.end(), 0);
-            while (FTYPE got = dfs(s, t, numeric_limits<FTYPE>::max()))
+            while (FType got = dfs(s, t, numeric_limits<FType>::max()))
                 ret += got;
         }
         return ret;
@@ -140,12 +154,13 @@ int main() {
         int N;
         cin >> N;
         vector<pll> children, candies;
-        FlowGraph<int> g(2 * N + 2);
+        Graph<FlowEdge> g(2 * N + 2);
+        FlowEdge::edge_cnt = 0;
         int s = 2 * N, t = 2 * N + 1;
 
         for (int i = 0; i < N; i++) {
-            g.add_edge(s, i, 1);
-            g.add_edge(N + i, t, 1);
+            FlowEdge::add(g, s, i, 1);
+            FlowEdge::add(g, N + i, t, 1);
             lint x, y;
             cin >> x >> y;
             children.push_back({x, y});
@@ -157,96 +172,122 @@ int main() {
         }
 
         auto dist = [&](pll a, pll b) {
-            return (a.first - b.first) * (a.first - b.first) +
-                (a.second - b.second) * (a.second - b.second);
+            auto [ax, ay] = a;
+            auto [bx, by] = b;
+            return (ax - bx) * (ax - bx) + (ay - by) * (ay - by);
         };
 
         for (int i = 0; i < N; i++) {
             for (int j = 1; j <= N; j++) {
                 if (dist(children[i], candies[j]) <= dist(children[i], candies[0])) {
-                    g.add_edge(i, N + j - 1, 1);
+                    FlowEdge::add(g, i, N + j - 1, 1);
                 }
             }
         }
 
         Dinic dinic(g);
-        int mf = dinic.max_flow(s, t);
 
-        auto val = [&](pii p) {
-            return dist(children[p.first], candies[p.second]);
+        if (dinic.max_flow(s, t) < N) {
+            printf("%s\n", IMPOSSIBLE.c_str());
+            continue;
+        }
+
+        printf("POSSIBLE\n");
+
+        vector<int> match(2 * N);
+        vector<bool> done(2 * N);
+
+        for (int i = 0; i < N; i++) {
+            for (auto edge: g.adj[i]) {
+                if (edge->v == s) {
+                    continue;
+                }
+                if (edge->cap == 0) {
+                    match[i] = edge->v;
+                    match[edge->v] = i;
+                    break;
+                }
+            }
+        }
+
+        vector<vector<int>> ord_candies;
+        for (int i = 0; i < N; i++) {
+            vector<int> ord;
+            for (int j = 1; j <= N; j++) {
+                if (dist(children[i], candies[j]) <= dist(children[i], candies[0])) {
+                    ord.push_back(j);
+                }
+            }
+            sort(ord.begin(), ord.end(), [&](int ca, int cb) {
+                return dist(children[i], candies[ca]) > dist(children[i], candies[cb]);
+            });
+            ord_candies.push_back(ord);
+        }
+
+        vector<pii> sol;
+
+        auto clean = [&]() {
+            bool rep = 1;
+            while (rep) {
+                rep = 0;
+                for (int i = 0; i < N; i++) {
+                    if (done[i]) {
+                        continue;
+                    }
+                    while (done[ord_candies[i].back() + N - 1]) {
+                        ord_candies[i].pop_back();
+                    }
+                    if (match[i] == ord_candies[i].back() + N - 1) {
+                        done[i] = done[match[i]] = 1;
+                        sol.push_back({i + 1, match[i] - N + 2});
+                        rep = 1;
+                    }
+                }
+            }
         };
 
-        if (mf < N) {
-            printf("%s\n", IMPOSSIBLE.c_str());
-        } else {
-            printf("POSSIBLE\n");
-            vector<pii> pairings;
-            for (int i = 0; i < N; i++) {
-                for (int edge: g.adj[i]) {
-                    if (g.edges[edge].v != s && g.edges[edge].cap == 0) {
-                        pairings.push_back({i, g.edges[edge].v - N + 1});
-                    }
-                }
-            }
+        clean();
 
-            for (int k = 0; k < N; k++) {
-                for (int i = 0; i < N; i++) {
-                    for (int j = i + 1; j < N; j++) {
-                        pii si = pairings[i], sj = pairings[j];
-                        swap(si.second, sj.second);
-                        if (val(pairings[i]) > val(si) && val(pairings[j]) > val(sj)) {
-                            swap(pairings[i].second, pairings[j].second);
+        while (sol.size() < N) {
+            for (int i = 0; i < N; i++) {
+                if (done[i]) {
+                    continue;
+                }
+
+                int cur = i;
+                vector<bool> seen(N);
+                stack<int> st{{cur}};
+                seen[cur] = 1;
+                while (1) {
+                    int candy = N + ord_candies[cur].back() - 1;
+                    int nxt = match[candy];
+                    if (seen[nxt]) {
+                        while (1) {
+                            int u = st.top();
+                            st.pop();
+                            int v = N + ord_candies[u].back() - 1;
+                            match[u] = v;
+                            match[v] = u;
+                            done[u] = done[v] = 1;
+                            sol.push_back({u + 1, v - N + 2});
+                            if (u == nxt) {
+                                break;
+                            }
                         }
+                        break;
                     }
+
+                    seen[nxt] = 1;
+                    st.push(nxt);
+                    cur = nxt;
                 }
+
+                clean();
             }
+        }
 
-            vector<int> take(N);
-            for (auto p: pairings) {
-                take[p.first] = p.second;
-            }
-
-            vector<bool> done_child(N, 0), done_candy(N + 1, 0);
-            queue<int> q;
-
-            auto is_closest = [&](int i, int j) {
-                for (int k = 1; k <= N; k++) {
-                    if (done_candy[k]) {
-                        continue;
-                    }
-                    if (dist(children[i], candies[k]) < dist(children[i], candies[j])) {
-                        return 0;
-                    }
-                }
-                return 1;
-            };
-
-            for (int i = 0; i < N; i++) {
-                if (is_closest(i, take[i])) {
-                    q.push(i);
-                    done_child[i] = 1;
-                    done_candy[take[i]] = 1;
-                }
-            }
-
-            int cnt = 0;
-            while (!q.empty()) {
-                cnt++;
-                int child = q.front(), candy = take[q.front()];
-                printf("%d %d\n", child + 1, candy + 1);
-                q.pop();
-                for (int i = 0; i < N; i++) {
-                    if (done_child[i]) {
-                        continue;
-                    }
-                    if (is_closest(i, take[i])) {
-                        q.push(i);
-                        done_child[i] = done_candy[take[i]] = 1;
-                    }
-                }
-            }
-
-            assert(cnt == N);
+        for (auto [a, b]: sol) {
+            printf("%d %d\n", a, b);
         }
     }
 
