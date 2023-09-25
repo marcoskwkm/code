@@ -1,3 +1,6 @@
+#ifdef CLANG
+#include "stdcpp.h"
+#endif
 #include <bits/stdc++.h>
 using namespace std;
 
