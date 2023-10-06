@@ -2,4 +2,5 @@
 -Wshadow
 -std=c++20
 -DHOME
+-DCLANG
 -g
