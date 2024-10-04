@@ -1,8 +1,4 @@
-#ifdef CLANG
-#include "stdcpp.h"
-#else
 #include <bits/stdc++.h>
-#endif
 using namespace std;
 
 #define debug(args...) fprintf(stderr, args)
