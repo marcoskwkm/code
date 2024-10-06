@@ -1,5 +1,5 @@
 COMPILER=g++-13
-COMPILE_FLAGS=-Wall -Wshadow -O2 -std=c++20 -DHOME -Wl,-stack_size -Wl,20000000
+COMPILE_FLAGS=-Wall -Wshadow -O2 -std=c++23 -DHOME -Wl,-stack_size -Wl,20000000
 
 run:
 	$(COMPILER) $p.cpp $(COMPILE_FLAGS) -o $p

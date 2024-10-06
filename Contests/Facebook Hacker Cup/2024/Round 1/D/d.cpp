@@ -1,5 +1,3 @@
-// I hate this contest format
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -13,50 +11,61 @@ typedef tuple<int, int, int> tiii;
 
 const int INF = 0x3f3f3f3f;
 const lint LINF = 0x3f3f3f3f3f3f3f3fll;
+const int MAXV = 1e9;
 
-template<class Fun> class y_combinator_result {
-    Fun fun_;
-
-  public:
-    template<class T> explicit y_combinator_result(T &&fun) : fun_(forward<T>(fun)) {}
-
-    template<class... Args> decltype(auto) operator()(Args &&...args) {
-        return fun_(ref(*this), forward<Args>(args)...);
-    }
-};
-
-template<class Fun> decltype(auto) y_combinator(Fun &&fun) {
-    return y_combinator_result<decay_t<Fun>>(forward<Fun>(fun));
-}
-
-template<class T = int> inline T read() {
+template<class T = int>
+inline T read() {
     T x;
     cin >> x;
     return x;
 }
 
-template<class T> inline vector<T> read_vector(int n) {
+template<class T>
+inline vector<T> read_vector(int n) {
     vector<T> v(n);
     read_array(v, n);
     return v;
 }
 
-template<class T> vector<T> make_vector(size_t size, T initialValue) {
+template<class T>
+vector<T> make_vector(size_t size, T initialValue) {
     return vector<T>(size, initialValue);
 }
 
-template<class T, class... Args> auto make_vector(size_t head, Args &&...rem) {
+template<class T, class... Args>
+auto make_vector(size_t head, Args &&...rem) {
     auto inner = make_vector<T>(rem...);
     return vector<decltype(inner)>(head, inner);
 }
 
-template<class T, class C = vector<T>> inline void print_array(C v, int n = -1) {
+template<class T, class C = vector<T>>
+inline void print_array(C v, int n = -1) {
     int cnt = 0;
     for (auto it = v.begin(); it != v.end() && cnt != n; it++, cnt++) {
         cout << *it << (next(it) == v.end() || cnt + 1 == n ? "" : " ");
     }
     cout << '\n';
 }
+
+// Ring of integers modulo n
+template<int mod>
+struct ZN {
+    int x;
+    ZN() : x(0) {}
+    ZN(int _x) : x((_x % mod + mod) % mod) {}
+    ZN operator+(ZN that) { return ZN((x + that.x) % mod); }
+    ZN operator-(ZN that) { return ZN((x - that.x + mod) % mod); }
+    ZN operator*(ZN that) { return ZN((lint(x) * that.x) % mod); }
+    ZN &operator+=(ZN that) { return *this = *this + that; }
+    ZN &operator-=(ZN that) { return *this = *this - that; }
+    ZN &operator*=(ZN that) { return *this = *this * that; }
+    ZN operator-() { return ZN(-x); }
+    bool operator==(ZN that) { return x == that.x; }
+    bool operator!=(ZN that) { return x != that.x; }
+    friend ostream &operator<<(ostream &os, ZN a) { return os << a.x; }
+    friend istream &operator>>(istream &is, ZN &a) { return is >> a.x; }
+};
+using Z = ZN<998244353>;
 
 int main() {
     ios_base::sync_with_stdio(0);
@@ -68,117 +77,84 @@ int main() {
         int K;
         cin >> S >> K;
         int n = S.size();
-        vector<lint> dp(n + 1, 0);
-        vector<int> maxd(n + 1, 9);
-        dp[n] = 1;
 
-        for (int i = n - 1; i >= 0; i--) {
-            if (S[i] == '0') continue;
+        vector<Z> dpz(n + 2);
+        vector<bool> has_sol(n + 2);
 
-            // single digit
-            dp[i] += dp[i + 1];
+        auto can_join = [](char l, char r) {
+            return l == '?' || l == '1' || (l == '2' && (r <= '6' || r == '?'));
+        };
 
-            // two digits
-            if (i + 1 >= n || (isdigit(S[i]) && S[i] >= '3')) continue;
-            if (S[i] == '2') {
-                if (isdigit(S[i + 1]) && S[i + 1] >= '7') continue;
-                dp[i] += dp[i + 2];
-            } else if (S[i] == '1') {
-                dp[i] += dp[i + 2];
-            } else {
-                dp[i] += dp[i + 2];
+        dpz[n + 1] = 1;
+        has_sol[n + 1] = 1;
+        for (int i = n; i >= 1; i--) {
+            char cur = S[i - 1], nxt = (i == n ? 0 : S[i]);
+            if (cur != '0') {
+                dpz[i] += dpz[i + 1];
+                has_sol[i] = has_sol[i] || has_sol[i + 1];
+            }
+            if (i == n) continue;
+            if (can_join(cur, nxt)) {
+                dpz[i] += dpz[i + 2];
+                has_sol[i] = has_sol[i] || has_sol[i + 2];
             }
         }
 
-        auto dp2 = make_vector<lint>(n + 1, 10, 0LL);
-        for (int i = n; i >= 0; i--) {
-            for (int hi = 1; hi <= 9; hi++) {
-                if (i == n) {
-                    dp2[i][hi] = 1;
+        auto get_hi = [&](int prv, int i) {
+            char cur = S[i - 1], nxt = (i == n ? 0 : S[i]);
+            int hi = (prv == 2 ? 6 : 9);
+            if (nxt != 0 && has_sol[i + 2]) {
+                hi = 2;
+                if (isdigit(nxt) && nxt >= '7') hi = 1;
+            }
+            return hi;
+        };
+
+        auto dp = make_vector<lint>(n + 2, 10, 0ll);
+
+        for (int prv = 0; prv <= 9; prv++) {
+            dp[n + 1][prv] = 1;
+        }
+        for (int i = n; i >= 1; i--) {
+            for (int prv = 0; prv <= 9; prv++) {
+                char cur = S[i - 1], nxt = (i == n ? 0 : S[i]);
+                if (isdigit(cur)) {
+                    dp[i][prv] = dp[i + 1][S[i - 1] - '0'];
                     continue;
                 }
 
-                if (isdigit(S[i])) {
-                    if (S[i] >= '3') {
-                        dp2[i][hi] += dp2[i + 1][9];
-                    } else if (S[i] == '2') {
-                        dp2[i][hi] += dp2[i + 1][6];
-                    } else if (S[i] == '1') {
-                        dp2[i][hi] += dp2[i + 1][9];
-                    } else if (S[i] == '0') {
-                        dp2[i][hi] += dp2[i + 1][9];
-                    }
+                int hi = get_hi(prv, i);
 
-                    dp2[i][hi] = min<lint>(dp2[i][hi], 1e9);
-                    continue;
-                } 
-
-                if (i + 1 == n) {
-                    dp2[i][hi] = hi;
-                    continue;
+                for (int d = 1; d <= hi; d++) {
+                    dp[i][prv] += dp[i + 1][d];
                 }
 
-                if (isdigit(S[i + 1])) {
-                    if (S[i + 1] >= '7') {
-                        dp2[i][hi] += dp2[i + 2][9];
-                    } else if (S[i + 1] == '2') {
-                        dp2[i][hi] += min(hi, 2) * dp2[i + 2][6];
-                    } else {
-                        dp2[i][hi] += min(hi, 2) * dp2[i + 2][9];
-                    }
-                    
-                    dp2[i][hi] = min<lint>(dp2[i][hi], 1e9);
-                    continue;
-                }
-
-                for (int l = 1; l <= min(hi, 2); l++) {
-                    for (int r = 1; r <= 9; r++) {
-                        if (i + 2 < n && r >= 3) continue;
-                        if (l == 2 && r >= 7) continue;
-                        if (r == 2) dp2[i][hi] += dp2[i + 2][6];
-                        else dp2[i][hi] += dp2[i + 2][9];
-                    }
-                }
-
-                dp2[i][hi] = min<lint>(dp2[i][hi], 1e9);
+                dp[i][prv] = min<lint>(dp[i][prv], MAXV);
             }
         }
 
-        string sol = S;
-        lint passed = 0;
-        int hi = 9;
-
-        for (int i = 0; i < n; i++) {
-            if (isdigit(sol[i])) {
-                if (sol[i] == '2') hi = 6;
-                else hi = 9;
+        int prv = 0;
+        for (int i = 1; i <= n; i++) {
+            char &cur = S[i - 1], nxt = (i == n ? 0 : S[i]);
+            if (isdigit(cur)) {
+                prv = cur - '0';
                 continue;
             }
-            for (int d = hi; d >= 0; d--) {
-                if (i + 1 < n && dp[i + 2] > 0 && d >= 3) continue;
 
-                lint cnt = 0;
-                if (d == 2) {
-                    if (i + 1 == n || S[i + 1] == '?' || S[i + 1] < '7') {
-                        cnt = dp2[i + 1][6];
-                    } else cnt = 0;
-                }
-                else {
-                    cnt = dp2[i + 1][9];
-                }
+            int hi = get_hi(prv, i);
 
-                if (passed + cnt >= K) {
-                    sol[i] = d + '0';
-                    if (d == 2) hi = 6;
-                    else hi = 9;
+            for (int d = hi; d >= 1; d--) {
+                if (dp[i + 1][d] >= K) {
+                    cur = d + '0';
+                    prv = d;
                     break;
                 } else {
-                    passed += cnt;
+                    K -= dp[i + 1][d];
                 }
             }
         }
 
-        printf("Case #%d: %s %lld\n", t, sol.c_str(), dp[0]);
+        printf("Case #%d: %s %d\n", t, S.c_str(), dpz[1].x);
     }
 
     return 0;
