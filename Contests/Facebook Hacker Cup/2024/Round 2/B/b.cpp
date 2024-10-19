@@ -1,5 +1,3 @@
-// WA
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -56,6 +54,7 @@ int main() {
     for (cin >> T; t <= T; t++) {
         const int N = 6, M = 7;
         auto dp = make_vector<short>(7, 7, 7, 7, 7, 7, 7, (short)-1);
+        auto finishable = make_vector<short>(7, 7, 7, 7, 7, 7, 7, (short)-1);
         vector<string> grid;
         for (int r = 0; r < N; r++) {
             string s;
@@ -119,9 +118,36 @@ int main() {
             return ret;
         };
 
+        auto is_finishable = [&](this const auto &f, vector<int> &cols, char player) {
+            auto &state = finishable[cols[0]][cols[1]][cols[2]][cols[3]][cols[4]][cols[5]][cols[6]];
+            if (state != -1) return state;
+
+            bool end = 1;
+            for (int x: cols) {
+                if (x < N) {
+                    end = 0;
+                    break;
+                }
+            }
+
+            if (end) return state = 1;
+            int fin = 0;
+
+            for (int col = 0; col < M; col++) {
+                if (cols[col] == N) continue;
+                if (grid[cols[col]][col] != player) continue;
+                cols[col]++;
+                fin = fin || f(cols, ('F' + 'C' - player));
+                cols[col]--;
+            }
+
+            return state = fin;
+        };
+
         auto go = [&](this const auto &f, vector<int> &cols, char player) {
             auto &state = dp[cols[0]][cols[1]][cols[2]][cols[3]][cols[4]][cols[5]][cols[6]];
             if (state != -1) return state;
+            if (!is_finishable(cols, player)) return state = 0;
 
             int res = check(cols);
             if (res) {
